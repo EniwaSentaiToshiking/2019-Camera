@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 opencv-python = "*"
 ulid-py = "*"
+pyocr = "*"
+pillow = "*"
 
 [dev-packages]
 
