@@ -10,7 +10,7 @@ pipenv
 
 ## 使い方
 
-weights ファイルをダウンロードし，プロジェクト直下に置く．  
+weights ファイルをダウンロードし，yolo/に置く．  
 [yolov3.weights](https://www.dropbox.com/s/1r2xawzvz0fpd8f/yolov3.weights?dl=0)
 
 `$ pipenv install`  
