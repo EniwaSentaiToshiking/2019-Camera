@@ -10,6 +10,8 @@ data/final_labels/
 data/inflated_labels/
 data/rotation_images/
 video/
+darknet
+backup/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

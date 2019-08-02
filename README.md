@@ -2,7 +2,7 @@
 
 ## 開発環境
 
-Python 3.6.0
+Python 3.5.0(共同PCの関係)
 
 ## 用いるパッケージ
 
@@ -20,7 +20,7 @@ weights ファイルをダウンロードし，yolo/に置く．
 キーボードの s を押下すると録画終了
 キーボードの q を押下すると終了
 
-## モデルの作り方
+## データセットの作り方
 
 - 画像の配置
   - images 元画像
@@ -46,3 +46,14 @@ weights ファイルをダウンロードし，yolo/に置く．
 - 手順
   - inflate_images.py
   - inflate_images_filter.py
+
+## モデルの作り方
+
+- darknetはよしなに準備する alex ver推奨
+- 初期重みはweight/にある
+    - v2は19
+    - v3は53
+- ./darknet detector train data/config/*.cfg data/config/*.data 初期重み -gpus 0,1 -map
+- 途中経過はbackup/
+- 推移はchart.png
+
