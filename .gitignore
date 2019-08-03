@@ -12,6 +12,11 @@ data/rotation_images/
 video/
 darknet
 backup/
+weights/
+log.txt
+predictions.jpg
+data/labels/
+chart.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
