@@ -79,13 +79,13 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
         cv2.imwrite(
             "{0}/{1}/{2}/{3}".format(data_dir, out_dir, class_name, new_file_name + ".jpg"), img)
         if i == 0:  # 画像変更なし
-            copyfile("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name),
+            copyfile("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name),
                      "{0}/inflated_labels/{1}/{2}".format(data_dir, class_name, new_file_name + ".txt"))
         elif i == 1:  # 縦反転
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -107,7 +107,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -129,7 +129,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -145,7 +145,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -161,7 +161,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -178,7 +178,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -194,7 +194,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -210,7 +210,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -226,7 +226,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -242,7 +242,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:
@@ -258,7 +258,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
             with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
-                with open("{0}/labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
+                with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
                     for line in bb_data.readlines():
                         elems = line.split(' ')
                         if len(elems) != 4:

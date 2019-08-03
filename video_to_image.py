@@ -24,4 +24,4 @@ def save_all_frames(video_path, dir_path, basename, ext='jpg'):
 
 # How to
 # save_all_frames('data/temp/sample_video.mp4', 'data/temp/result', 'sample_video_img')
-save_all_frames('video/output_1_a.mp4', 'images/001', '1-video', 'jpg')
+save_all_frames('video/output_9_a.mp4', 'data/images/009', '9-video', 'jpg')
