@@ -9,6 +9,7 @@ data/dataset/
 data/final_labels/
 data/inflated_labels/
 data/rotation_images/
+data/images/labels/
 video/
 darknet
 backup/
