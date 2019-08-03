@@ -24,7 +24,7 @@ weights ファイルをダウンロードし，yolo/に置く．
 
 - 画像の配置
   - images 元画像
-  - labels 元ラベル
+  - labels-fist 元ラベル
   - rotation_images 回転後の画像
   - inflate_labels 回転後のラベル
   - dataset 回転+フィルター処理後の画像
@@ -44,8 +44,9 @@ weights ファイルをダウンロードし，yolo/に置く．
   - ノイズ付加(ガウシアン)
   - (通常 1 + 通常 1 _ 回転 3 + 反転 2 　+ 反転 2 _ 回転 3) \* フィルター 14 = 168 枚
 - 手順
-  - inflate_images.py
-  - inflate_images_filter.py
+  - python inflate_images.py data
+  - python inflate_images_filter.py data
+  - python convert.py data dataset
 
 ## モデルの作り方
 
@@ -53,7 +54,8 @@ weights ファイルをダウンロードし，yolo/に置く．
 - 初期重みはweight/にある
     - v2は19
     - v3は53
-- ./darknet detector train data/config/*.cfg data/config/*.data 初期重み -gpus 0,1 -map
+- ./darknet detector train data/config/*.data data/config/*.cfg 初期重み -gpus 0,1 -map >> log.txt
 - 途中経過はbackup/
 - 推移はchart.png
-
+- ./darknet detector test data/config/*.data data/config/*.cfg 重み -gpus 0,1 任意の画像のパス >> log.txt
+- ./darknet detector map data/config/*.data data/config/*.cfg 初期重み -gpus 0,1 >> log.txt
