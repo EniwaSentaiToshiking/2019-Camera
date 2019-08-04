@@ -106,22 +106,8 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
         text_file_name = file_name.replace(".jpg", ".txt")
         cv2.imwrite(
             "{0}/{1}/{2}/{3}".format(data_dir, out_dir, class_name, new_file_name + ".jpg"), img)
-        with open("{0}/final_labels/{1}/{2}".format(data_dir,
-                                                           class_name,
-                                                           new_file_name + ".txt"), "w") as new_bb_data:
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
-                for line in bb_data.readlines():
-                        elems = line.split(' ')
-                        if len(elems) != 4:
-                            new_bb_data.write(line)
-                            continue
-                        x1 = int(elems[0])
-                        y1 = int(elems[1])
-                        x2 = int(elems[2])
-                        y2 = int(elems[3])
-                        width = img_src.shape[1]
-                        new_bb_data.write("{0} {1} {2} {3}\n".format(
-                            width - x2, y1, width - x1, y2))
+        copyfile("{0}/inflated_labels/{1}/{2}".format(data_dir, class_num, text_file_name),
+                     "{0}/final_labels/{1}/{2}".format(data_dir, class_name, new_file_name + ".txt"))
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
