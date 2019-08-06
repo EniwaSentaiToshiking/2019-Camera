@@ -1,0 +1,385 @@
+yokoyama@nagisa:/media/yokoyama/HDD3TB1/robo2019/2019-Camera$ ./darknet detector map data/config/learning.data data/config/learning.cfg backup/learning_1000.weights -gpus 0,1
+0,1
+layer     filters    size              input                output
+   0 conv     32  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  32 0.299 BF
+   1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32 0.006 BF
+   2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64 1.595 BF
+   3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64 0.003 BF
+   4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   5 conv     64  1 x 1 / 1   104 x 104 x 128   ->   104 x 104 x  64 0.177 BF
+   6 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   7 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128 0.001 BF
+   8 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+   9 conv    128  1 x 1 / 1    52 x  52 x 256   ->    52 x  52 x 128 0.177 BF
+  10 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+  11 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256 0.001 BF
+  12 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  13 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  14 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  15 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  16 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  17 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512 0.000 BF
+  18 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  19 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  20 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  21 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  22 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  23 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  24 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  25 route  16
+  26 reorg              / 2    26 x  26 x 512   ->    13 x  13 x2048
+  27 route  26 24
+  28 conv   1024  3 x 3 / 1    13 x  13 x3072   ->    13 x  13 x1024 9.569 BF
+  29 conv     65  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x  65 0.022 BF
+  30 detection
+mask_scale: Using default '1.000000'
+Total BFLOPS 34.888 
+ Allocate additional workspace_size = 49.84 MB 
+Loading weights from backup/learning_1000.weights...
+ seen 64 
+Done!
+
+ calculation mAP (mean average precision)...
+1344
+ detections_count = 1280, unique_truth_count = 1344  
+class_id = 0, name = 001, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 1, name = 002, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 2, name = 003, ap = 49.40%            (TP = 84, FP = 0) 
+class_id = 3, name = 004, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 4, name = 005, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 5, name = 006, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 6, name = 007, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 7, name = 008, ap = 50.00%            (TP = 84, FP = 0) 
+
+ for thresh = 0.25, precision = 1.00, recall = 0.50, F1-score = 0.67 
+ for thresh = 0.25, TP = 672, FP = 0, FN = 672, average IoU = 86.21 % 
+
+ IoU threshold = 50 %, used Area-Under-Curve for each unique Recall 
+ mean average precision (mAP@0.50) = 0.499256, or 49.93 % 
+Total Detection Time: 14.000000 Seconds
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+yokoyama@nagisa:/media/yokoyama/HDD3TB1/robo2019/2019-Camera$ ./darknet detector map data/config/learning.data data/config/learning.cfg backup/learning_2000.weights -gpus 0,1
+0,1
+layer     filters    size              input                output
+   0 conv     32  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  32 0.299 BF
+   1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32 0.006 BF
+   2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64 1.595 BF
+   3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64 0.003 BF
+   4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   5 conv     64  1 x 1 / 1   104 x 104 x 128   ->   104 x 104 x  64 0.177 BF
+   6 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   7 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128 0.001 BF
+   8 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+   9 conv    128  1 x 1 / 1    52 x  52 x 256   ->    52 x  52 x 128 0.177 BF
+  10 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+  11 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256 0.001 BF
+  12 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  13 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  14 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  15 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  16 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  17 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512 0.000 BF
+  18 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  19 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  20 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  21 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  22 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  23 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  24 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  25 route  16
+  26 reorg              / 2    26 x  26 x 512   ->    13 x  13 x2048
+  27 route  26 24
+  28 conv   1024  3 x 3 / 1    13 x  13 x3072   ->    13 x  13 x1024 9.569 BF
+  29 conv     65  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x  65 0.022 BF
+  30 detection
+mask_scale: Using default '1.000000'
+Total BFLOPS 34.888 
+ Allocate additional workspace_size = 49.84 MB 
+Loading weights from backup/learning_2000.weights...
+ seen 64 
+Done!
+
+ calculation mAP (mean average precision)...
+1344
+ detections_count = 1096, unique_truth_count = 1344  
+class_id = 0, name = 001, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 1, name = 002, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 2, name = 003, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 3, name = 004, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 4, name = 005, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 5, name = 006, ap = 49.40%            (TP = 84, FP = 0) 
+class_id = 6, name = 007, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 7, name = 008, ap = 50.00%            (TP = 84, FP = 0) 
+
+ for thresh = 0.25, precision = 1.00, recall = 0.50, F1-score = 0.67 
+ for thresh = 0.25, TP = 672, FP = 0, FN = 672, average IoU = 89.43 % 
+
+ IoU threshold = 50 %, used Area-Under-Curve for each unique Recall 
+ mean average precision (mAP@0.50) = 0.499256, or 49.93 % 
+Total Detection Time: 13.000000 Seconds
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+yokoyama@nagisa:/media/yokoyama/HDD3TB1/robo2019/2019-Camera$ ./darknet detector map data/config/learning.data data/config/learning.cfg backup/learning_3000.weights -gpus 0,1
+0,1
+layer     filters    size              input                output
+   0 conv     32  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  32 0.299 BF
+   1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32 0.006 BF
+   2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64 1.595 BF
+   3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64 0.003 BF
+   4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   5 conv     64  1 x 1 / 1   104 x 104 x 128   ->   104 x 104 x  64 0.177 BF
+   6 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   7 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128 0.001 BF
+   8 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+   9 conv    128  1 x 1 / 1    52 x  52 x 256   ->    52 x  52 x 128 0.177 BF
+  10 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+  11 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256 0.001 BF
+  12 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  13 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  14 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  15 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  16 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  17 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512 0.000 BF
+  18 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  19 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  20 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  21 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  22 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  23 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  24 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  25 route  16
+  26 reorg              / 2    26 x  26 x 512   ->    13 x  13 x2048
+  27 route  26 24
+  28 conv   1024  3 x 3 / 1    13 x  13 x3072   ->    13 x  13 x1024 9.569 BF
+  29 conv     65  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x  65 0.022 BF
+  30 detection
+mask_scale: Using default '1.000000'
+Total BFLOPS 34.888 
+ Allocate additional workspace_size = 49.84 MB 
+Loading weights from backup/learning_3000.weights...
+ seen 64 
+Done!
+
+ calculation mAP (mean average precision)...
+1344
+ detections_count = 832, unique_truth_count = 1344  
+class_id = 0, name = 001, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 1, name = 002, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 2, name = 003, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 3, name = 004, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 4, name = 005, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 5, name = 006, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 6, name = 007, ap = 49.40%            (TP = 84, FP = 0) 
+class_id = 7, name = 008, ap = 50.00%            (TP = 84, FP = 0) 
+
+ for thresh = 0.25, precision = 1.00, recall = 0.50, F1-score = 0.67 
+ for thresh = 0.25, TP = 672, FP = 0, FN = 672, average IoU = 91.30 % 
+
+ IoU threshold = 50 %, used Area-Under-Curve for each unique Recall 
+ mean average precision (mAP@0.50) = 0.499256, or 49.93 % 
+Total Detection Time: 14.000000 Seconds
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+yokoyama@nagisa:/media/yokoyama/HDD3TB1/robo2019/2019-Camera$ ./darknet detector map data/config/learning.data data/config/learning.cfg backup/learning_4000.weights -gpus 0,1
+0,1
+layer     filters    size              input                output
+   0 conv     32  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  32 0.299 BF
+   1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32 0.006 BF
+   2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64 1.595 BF
+   3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64 0.003 BF
+   4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   5 conv     64  1 x 1 / 1   104 x 104 x 128   ->   104 x 104 x  64 0.177 BF
+   6 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   7 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128 0.001 BF
+   8 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+   9 conv    128  1 x 1 / 1    52 x  52 x 256   ->    52 x  52 x 128 0.177 BF
+  10 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+  11 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256 0.001 BF
+  12 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  13 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  14 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  15 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  16 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  17 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512 0.000 BF
+  18 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  19 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  20 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  21 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  22 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  23 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  24 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  25 route  16
+  26 reorg              / 2    26 x  26 x 512   ->    13 x  13 x2048
+  27 route  26 24
+  28 conv   1024  3 x 3 / 1    13 x  13 x3072   ->    13 x  13 x1024 9.569 BF
+  29 conv     65  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x  65 0.022 BF
+  30 detection
+mask_scale: Using default '1.000000'
+Total BFLOPS 34.888 
+ Allocate additional workspace_size = 49.84 MB 
+Loading weights from backup/learning_4000.weights...
+ seen 64 
+Done!
+
+ calculation mAP (mean average precision)...
+1344
+ detections_count = 782, unique_truth_count = 1344  
+class_id = 0, name = 001, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 1, name = 002, ap = 49.40%            (TP = 84, FP = 0) 
+class_id = 2, name = 003, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 3, name = 004, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 4, name = 005, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 5, name = 006, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 6, name = 007, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 7, name = 008, ap = 50.00%            (TP = 84, FP = 0) 
+
+ for thresh = 0.25, precision = 1.00, recall = 0.50, F1-score = 0.67 
+ for thresh = 0.25, TP = 672, FP = 0, FN = 672, average IoU = 91.08 % 
+
+ IoU threshold = 50 %, used Area-Under-Curve for each unique Recall 
+ mean average precision (mAP@0.50) = 0.499256, or 49.93 % 
+Total Detection Time: 14.000000 Seconds
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+yokoyama@nagisa:/media/yokoyama/HDD3TB1/robo2019/2019-Camera$ ./darknet detector map data/config/learning.data data/config/learning.cfg backup/learning_5000.weights -gpus 0,1
+0,1
+layer     filters    size              input                output
+   0 conv     32  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  32 0.299 BF
+   1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32 0.006 BF
+   2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64 1.595 BF
+   3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64 0.003 BF
+   4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   5 conv     64  1 x 1 / 1   104 x 104 x 128   ->   104 x 104 x  64 0.177 BF
+   6 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   7 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128 0.001 BF
+   8 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+   9 conv    128  1 x 1 / 1    52 x  52 x 256   ->    52 x  52 x 128 0.177 BF
+  10 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+  11 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256 0.001 BF
+  12 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  13 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  14 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  15 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  16 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  17 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512 0.000 BF
+  18 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  19 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  20 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  21 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  22 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  23 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  24 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  25 route  16
+  26 reorg              / 2    26 x  26 x 512   ->    13 x  13 x2048
+  27 route  26 24
+  28 conv   1024  3 x 3 / 1    13 x  13 x3072   ->    13 x  13 x1024 9.569 BF
+  29 conv     65  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x  65 0.022 BF
+  30 detection
+mask_scale: Using default '1.000000'
+Total BFLOPS 34.888 
+ Allocate additional workspace_size = 49.84 MB 
+Loading weights from backup/learning_5000.weights...
+ seen 64 
+Done!
+
+ calculation mAP (mean average precision)...
+1344
+ detections_count = 719, unique_truth_count = 1344  
+class_id = 0, name = 001, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 1, name = 002, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 2, name = 003, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 3, name = 004, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 4, name = 005, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 5, name = 006, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 6, name = 007, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 7, name = 008, ap = 49.40%            (TP = 84, FP = 0) 
+
+ for thresh = 0.25, precision = 1.00, recall = 0.50, F1-score = 0.67 
+ for thresh = 0.25, TP = 672, FP = 0, FN = 672, average IoU = 92.03 % 
+
+ IoU threshold = 50 %, used Area-Under-Curve for each unique Recall 
+ mean average precision (mAP@0.50) = 0.499256, or 49.93 % 
+Total Detection Time: 14.000000 Seconds
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+yokoyama@nagisa:/media/yokoyama/HDD3TB1/robo2019/2019-Camera$ ./darknet detector map data/config/learning.data data/config/learning.cfg backup/learning_6000.weights -gpus 0,1
+0,1
+layer     filters    size              input                output
+   0 conv     32  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  32 0.299 BF
+   1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32 0.006 BF
+   2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64 1.595 BF
+   3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64 0.003 BF
+   4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   5 conv     64  1 x 1 / 1   104 x 104 x 128   ->   104 x 104 x  64 0.177 BF
+   6 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128 1.595 BF
+   7 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128 0.001 BF
+   8 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+   9 conv    128  1 x 1 / 1    52 x  52 x 256   ->    52 x  52 x 128 0.177 BF
+  10 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256 1.595 BF
+  11 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256 0.001 BF
+  12 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  13 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  14 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  15 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256 0.177 BF
+  16 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512 1.595 BF
+  17 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512 0.000 BF
+  18 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  19 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  20 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  21 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512 0.177 BF
+  22 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  23 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  24 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024 3.190 BF
+  25 route  16
+  26 reorg              / 2    26 x  26 x 512   ->    13 x  13 x2048
+  27 route  26 24
+  28 conv   1024  3 x 3 / 1    13 x  13 x3072   ->    13 x  13 x1024 9.569 BF
+  29 conv     65  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x  65 0.022 BF
+  30 detection
+mask_scale: Using default '1.000000'
+Total BFLOPS 34.888 
+ Allocate additional workspace_size = 49.84 MB 
+Loading weights from backup/learning_6000.weights...
+ seen 64 
+Done!
+
+ calculation mAP (mean average precision)...
+1344
+ detections_count = 736, unique_truth_count = 1344  
+class_id = 0, name = 001, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 1, name = 002, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 2, name = 003, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 3, name = 004, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 4, name = 005, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 5, name = 006, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 6, name = 007, ap = 50.00%            (TP = 84, FP = 0) 
+class_id = 7, name = 008, ap = 49.40%            (TP = 84, FP = 0) 
+
+ for thresh = 0.25, precision = 1.00, recall = 0.50, F1-score = 0.67 
+ for thresh = 0.25, TP = 672, FP = 0, FN = 672, average IoU = 92.09 % 
+
+ IoU threshold = 50 %, used Area-Under-Curve for each unique Recall 
+ mean average precision (mAP@0.50) = 0.499256, or 49.93 % 
+Total Detection Time: 14.000000 Seconds
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+yokoyama@nagisa:/media/yokoyama/HDD3TB1/robo2019/2019-Camera$ 

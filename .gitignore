@@ -19,6 +19,8 @@ predictions.jpg
 data/labels/
 chart.png
 map-log.txt
+bad.list
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
