@@ -1,15 +1,16 @@
 import cv2 as cv
 import numpy as np
-import ulid
+# import ulid
 import os
 
 # 初期化
-confThreshold = 0.5
+confThreshold = 0.1
 nmsThreshold = 0.4
 inpWidth = 416
 inpHeight = 416
 
 # VideoCapture を作成する。
+# camera_url = 'video/output_1_a.mp4'
 camera_url = 'http://192.168.11.100/?action=stream'
 cap = cv.VideoCapture(camera_url)
 
@@ -20,15 +21,15 @@ fps = cap.get(cv.CAP_PROP_FPS)
 fourcc = cv.VideoWriter_fourcc('m','p','4','v')
 
 # Yolo関連のモデルの読み込み
-modelConfiguration = "yolo/yolov3.cfg"
-modelWeights = "yolo/yolov3.weights"
+modelConfiguration = "yolo/learning_v1.cfg"
+modelWeights = "yolo/learning_26000.weights"
 
 net = cv.dnn.readNetFromDarknet(modelConfiguration, modelWeights)
 net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
 net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
 
 # クラス名の読み込み
-classesFile = "yolo/datasets.names"
+classesFile = "yolo/learning_v1.names"
 classes = None
 with open(classesFile, 'rt') as f:
     classes = f.read().rstrip('\n').split('\n')
@@ -79,7 +80,8 @@ def postprocess(frame, outs):
                 boxes.append([left, top, width, height])
 
     indices = cv.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
-    save_root_path = "result/" + ulid.new().str
+    # save_root_path = "result/" + ulid.new().str
+    save_root_path = "result/"
 
     # Yoloで出力されるボックスの位置を出す
     for i in indices:
@@ -146,7 +148,7 @@ while True:
         break  # 映像取得に失敗
     
     # 8フレームごとに行う
-    if frame_count % 8 == 0:
+    if frame_count % 4 == 0:
         blob = cv.dnn.blobFromImage(frame, 1 / 255, (inpWidth, inpHeight), [0, 0, 0], 1, crop=False)
         net.setInput(blob)
         outs = net.forward(getOutputsNames(net))
