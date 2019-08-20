@@ -77,7 +77,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
 
     # 画像の読み込み
     img_src = cv2.imread(
-        "{0}/rotation_images/{1}/{2}".format(data_dir, class_num, file_name), 1)
+        "{0}/rotation_numbers_images/{1}/{2}".format(data_dir, class_num, file_name), 1)
     trans_img = []
 
     # LUT変換
@@ -106,7 +106,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
         text_file_name = file_name.replace(".jpg", ".txt")
         cv2.imwrite(
             "{0}/{1}/{2}/{3}".format(data_dir, out_dir, class_name, new_file_name + ".jpg"), img)
-        copyfile("{0}/inflated_labels/{1}/{2}".format(data_dir, class_num, text_file_name),
+        copyfile("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir, class_num, text_file_name),
                      "{0}/final_labels/{1}/{2}".format(data_dir, class_name, new_file_name + ".txt"))
 
 if __name__ == '__main__':
@@ -124,19 +124,19 @@ if __name__ == '__main__':
 
     # クラス名のファイルの読み込み
     classes = []
-    classes = [line.rstrip() for line in open('{0}/classes.txt'.format(data_dir), 'r')]
+    classes = [line.rstrip() for line in open('{0}/number.txt'.format(data_dir), 'r')]
 
     print('class name = ', end='')
     for i in classes:
         print(i, end=' ')
     print("")
 
-    for _, dirs, _ in os.walk("{0}/rotation_images/".format(data_dir)):
+    for _, dirs, _ in os.walk("{0}/rotation_numbers_images/".format(data_dir)):
         for class_name in classes:
             for class_num in dirs:
                 if class_num == class_name:
-                    print("{0}/rotation_images/{1}".format(data_dir, class_name))
-                    for _, _, files in os.walk("{0}/rotation_images/{1}".format(data_dir, class_num)):
+                    print("{0}/rotation_numbers_images/{1}".format(data_dir, class_name))
+                    for _, _, files in os.walk("{0}/rotation_numbers_images/{1}".format(data_dir, class_num)):
                         for file_name in files:
                             try:
                                 main(data_dir, file_name, class_num, class_name, out_dir)

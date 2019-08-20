@@ -2,7 +2,7 @@
 
 ## 開発環境
 
-Python 3.5.0(共同PCの関係)
+Python 3.5.0(共同 PC の関係)
 
 ## 用いるパッケージ
 
@@ -44,18 +44,21 @@ weights ファイルをダウンロードし，yolo/に置く．
   - ノイズ付加(ガウシアン)
   - (通常 1 + 通常 1 _ 回転 3 + 反転 2 　+ 反転 2 _ 回転 3) \* フィルター 14 = 168 枚
 - 手順
-  - python inflate_images.py data
-  - python inflate_images_filter.py data
+  - ブロック
+    - python inflate_block.py data
+  - 数字
+    - python inflate_number.py data
+    - python inflate_number_filter.py data
   - python convert.py data dataset
 
 ## モデルの作り方
 
-- darknetはよしなに準備する alex ver推奨
-- 初期重みはweight/にある
-    - v2は19
-    - v3は53
-- ./darknet detector train data/config/*.data data/config/*.cfg 初期重み -gpus 0,1 -map >> log.txt
-- 途中経過はbackup/
-- 推移はchart.png
-- ./darknet detector test data/config/*.data data/config/*.cfg 重み -gpus 0,1 任意の画像のパス >> log.txt
-- ./darknet detector map data/config/*.data data/config/*.cfg 初期重み -gpus 0,1 >> log.txt
+- darknet はよしなに準備する alex ver 推奨
+- 初期重みは weight/にある
+  - v2 は 19
+  - v3 は 53
+- ./darknet detector train data/config/_.data data/config/_.cfg 初期重み -gpus 0,1 -map >> log.txt
+- 途中経過は backup/
+- 推移は chart.png
+- ./darknet detector test data/config/_.data data/config/_.cfg 重み -gpus 0,1 任意の画像のパス
+- ./darknet detector map data/config/_.data data/config/_.cfg 初期重み -gpus 0,1 >> map.txt

@@ -7,6 +7,8 @@ yolo/*.weights
 data/config/
 data/dataset/
 data/final_labels/
+data/rotation_numbers_images/
+data/rotation_numbers_labels/
 data/inflated_labels/
 data/rotation_images/
 data/images/labels/

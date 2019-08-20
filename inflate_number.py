@@ -47,8 +47,8 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
     trans_img.extend(rotate_img)
     if not os.path.exists("{0}/{1}".format(data_dir, out_dir)):
         os.makedirs("{0}/{1}".format(data_dir, out_dir))
-    if not os.path.exists("{0}/inflated_labels".format(data_dir)):
-        os.makedirs("{0}/inflated_labels".format(data_dir))
+    if not os.path.exists("{0}/rotation_numbers_labels".format(data_dir)):
+        os.makedirs("{0}/rotation_numbers_labels".format(data_dir))
 
     # 保存
     base = os.path.splitext(os.path.basename(file_name))[0] + "_"
@@ -72,17 +72,17 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
     for i, img in enumerate(trans_img):
         if not os.path.exists("{0}/{1}/{2}".format(data_dir, out_dir, class_name)):
             os.makedirs("{0}/{1}/{2}".format(data_dir, out_dir, class_name))
-        if not os.path.exists("{0}/inflated_labels/{1}".format(data_dir, class_name)):
-            os.makedirs("{0}/inflated_labels/{1}".format(data_dir, class_name))
+        if not os.path.exists("{0}/rotation_numbers_labels/{1}".format(data_dir, class_name)):
+            os.makedirs("{0}/rotation_numbers_labels/{1}".format(data_dir, class_name))
         new_file_name = base + str(i)
         text_file_name = file_name.replace(".jpg", ".txt")
         cv2.imwrite(
             "{0}/{1}/{2}/{3}".format(data_dir, out_dir, class_name, new_file_name + ".jpg"), img)
         if i == 0:  # 画像変更なし
             copyfile("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name),
-                     "{0}/inflated_labels/{1}/{2}".format(data_dir, class_name, new_file_name + ".txt"))
+                     "{0}/rotation_numbers_labels/{1}/{2}".format(data_dir, class_name, new_file_name + ".txt"))
         elif i == 1:  # 縦反転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -104,7 +104,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             x1, height - y2, x2, height - y1))
         elif i == 2:  # 横反転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -126,7 +126,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             width - x2, y1, width - x1, y2))
         elif i == 3:  # 90度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -142,7 +142,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             height - y2, x2, height - y1, x1))
         elif i == 4:  # 180度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -158,7 +158,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             width - x2, height - y2, width - x1, height - y1))
         elif i == 5:  # 270度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -175,7 +175,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                             y2, width - x2, y1, width - x1))
 
         elif i == 6:  # y rev 90度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -191,7 +191,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             height - y_rev_y2, y_rev_x2, height - y_rev_y1, y_rev_x1))
         elif i == 7:  # y rev 180度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -207,7 +207,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             width - y_rev_x2, height - y_rev_y2, width - y_rev_x1, height - y_rev_y1))
         elif i == 8:  # y rev 270度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -223,7 +223,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             y_rev_y2, width - y_rev_x2, y_rev_y1, width - y_rev_x1))
         elif i == 9:  # x rev 90度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -239,7 +239,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             height - x_rev_y2, x_rev_x2, height - x_rev_y1, x_rev_x1))
         elif i == 10:  # x rev 180度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -255,7 +255,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
                         new_bb_data.write("{0} {1} {2} {3}\n".format(
                             width - x_rev_x2, height - x_rev_y2, width - x_rev_x1, height - x_rev_y1))
         elif i == 11:  # x rev 270度回転
-            with open("{0}/inflated_labels/{1}/{2}".format(data_dir,
+            with open("{0}/rotation_numbers_labels/{1}/{2}".format(data_dir,
                                                            class_name,
                                                            new_file_name + ".txt"), "w") as new_bb_data:
                 with open("{0}/labels-first/{1}/{2}".format(data_dir, class_num, text_file_name), "r") as bb_data:
@@ -278,7 +278,7 @@ if __name__ == '__main__':
         exit(-1)
 
     # 増幅するフォルダ名の決定
-    out_dir = "rotation_images"
+    out_dir = "rotation_numbers_images"
     if len(sys.argv) > 2:
         out_dir = sys.argv[2]
 
@@ -286,7 +286,7 @@ if __name__ == '__main__':
 
     # クラス名のファイルの読み込み
     classes = []
-    classes = [line.rstrip() for line in open('{0}/classes.txt'.format(data_dir), 'r')]
+    classes = [line.rstrip() for line in open('{0}/number.txt'.format(data_dir), 'r')]
 
     print('class name = ', end='')
     for i in classes:
