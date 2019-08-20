@@ -3,7 +3,7 @@
 node_modules/
 
 # for ETROBO
-yolo/yolov3.weights
+yolo/*.weights
 data/config/
 data/dataset/
 data/final_labels/

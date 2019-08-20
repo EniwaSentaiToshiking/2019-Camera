@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # 初期化
-confThreshold = 0.1
+confThreshold = 0.6
 nmsThreshold = 0.4
 inpWidth = 416
 inpHeight = 416
@@ -87,10 +87,10 @@ def postprocess(frame, outs):
     for i in indices:
         if not os.path.exists(save_root_path):
             os.mkdir(save_root_path)
-            try:
-                cv.imwrite(save_root_path + '/' + 'root' + '.png', frame)
-            except Exception as e:
-                print(e)
+            # try:
+            #     cv.imwrite(save_root_path + '/' + 'root' + '.png', frame)
+            # except Exception as e:
+            #     print(e)
         i = i[0]
         box = boxes[i]
         left = box[0]
