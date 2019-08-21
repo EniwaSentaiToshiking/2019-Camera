@@ -23,6 +23,8 @@ chart.png
 map-log.txt
 bad.list
 model.md
+*.mp4
+test_yolo.py
 
 
 # Byte-compiled / optimized / DLL files

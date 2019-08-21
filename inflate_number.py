@@ -18,18 +18,6 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
     trans_img = []
     trans_img.append(img_src)
 
-    # 反転
-    flip_img = []
-    for img in trans_img:
-        flip_img.append(cv2.flip(img, 0))  # 縦反転
-        flip_img.append(cv2.flip(img, 1))  # 横反転
-
-        height_y_rev = cv2.flip(img, 0).shape[0]
-        width_y_rev = cv2.flip(img, 0).shape[1]
-
-        height_x_rev = cv2.flip(img, 1).shape[0]
-        width_x_rev = cv2.flip(img, 1).shape[1]
-
     # 回転
     rotate_img = []
     for img in trans_img:
@@ -37,13 +25,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
         rotate_img.append(np.rot90(np.rot90(img)))  # 180
         rotate_img.append(img.transpose(1,0,2)[::-1])  # 270
 
-    for img in flip_img:
-        rotate_img.append(img.transpose(1, 0, 2)[:, ::-1])  # 90
-        rotate_img.append(np.rot90(np.rot90(img)))  # 180
-        rotate_img.append(img.transpose(1, 0, 2)[::-1])  # 270
-
-    # ディレクトリを作り、反転と回転イメージをリストに追加
-    trans_img.extend(flip_img)
+    # ディレクトリを作り、回転イメージをリストに追加
     trans_img.extend(rotate_img)
     if not os.path.exists("{0}/{1}".format(data_dir, out_dir)):
         os.makedirs("{0}/{1}".format(data_dir, out_dir))
@@ -66,8 +48,6 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
     x_rev_y1 = 0
     x_rev_x2 = 0
     x_rev_y2 = 0
-
-    print(len(trans_img))
 
     for i, img in enumerate(trans_img):
         if not os.path.exists("{0}/{1}/{2}".format(data_dir, out_dir, class_name)):
