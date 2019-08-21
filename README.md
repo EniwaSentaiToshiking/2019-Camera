@@ -49,7 +49,7 @@ weights ファイルをダウンロードし，yolo/に置く．
   - 数字
     - python inflate_number.py data
     - python inflate_number_filter.py data
-  - python convert.py data dataset
+  - python convert.py data dataset 0.8
 
 ## モデルの作り方
 
@@ -57,8 +57,15 @@ weights ファイルをダウンロードし，yolo/に置く．
 - 初期重みは weight/にある
   - v2 は 19
   - v3 は 53
-- ./darknet detector train data/config/_.data data/config/_.cfg 初期重み -gpus 0,1 -map >> log.txt
+- ./darknet detector train data/config/learning.data data/config/learning.cfg 初期重み -gpus 0,1 -map >> log.txt
 - 途中経過は backup/
 - 推移は chart.png
-- ./darknet detector test data/config/_.data data/config/_.cfg 重み -gpus 0,1 任意の画像のパス
-- ./darknet detector map data/config/_.data data/config/_.cfg 初期重み -gpus 0,1 >> map.txt
+- ./darknet detector test data/config/learning.data data/config/learning.cfg 重み -gpus 0,1 任意の画像のパス
+- ./darknet detector map data/config/learning.data data/config/learning.cfg 初期重み -gpus 0,1 >> map.txt
+
+## fine tuning
+- 重みの切り出し方
+ - ./darknet partial yolo/yolov3.cfg weights/yolov3.weights 2018robo.conv.81 81
+ - 予めyolov3.cfgの548行目に、stopbacward=1を記入して出力層以外を切り出すこと
+- 学習方法
+  - 通常どおり行う。初期重みをさっき作った奴にする
