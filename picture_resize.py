@@ -3,11 +3,11 @@ import glob
 import os
 
 # 画像ファイルの読み込み
-file_list = sorted(glob.glob('images/2019/red/*.JPG'))
+file_list = sorted(glob.glob('images/2019/black/*.JPG'))
 # リサイズ後の画像名
-file_name = 'red'
+file_name = 'black'
 # 画像の保存先
-save_folder = '001'
+save_folder = '005'
 
 
 def resize(image):
