@@ -26,6 +26,7 @@ model.md
 *.mp4
 test_yolo.py
 images/
+yolo/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
