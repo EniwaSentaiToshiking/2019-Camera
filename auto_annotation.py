@@ -6,14 +6,14 @@ import string
 
 # 初期化
 # 検出する閾値
-confThreshold = 0.83
+confThreshold = 0.6
 nmsThreshold = 0.4
 inpWidth = 416
 inpHeight = 416
 
 # VideoCapture を作成する。
-camera_url = 'video/output_8_r.mp4'
-# camera_url = 'http://192.168.11.100/?action=stream'
+# camera_url = 'video/output_8_r.mp4'
+camera_url = 'http://192.168.11.100/?action=stream'
 cap = cv.VideoCapture(camera_url)
 
 # VideoWriter を作成する。
@@ -82,7 +82,7 @@ def postprocess(nonBB_image, frame, outs):
     indices = cv.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
     # かぶらないかぶらないファイル名を生成するため
     random_path_name = random_string(10)
-    save_root_path = "annotation_images/"
+    save_root_path = "annotation_images"
 
     # Yoloで出力されるボックスの位置を出す
     for i in indices:
@@ -96,17 +96,23 @@ def postprocess(nonBB_image, frame, outs):
         filename = random_path_name + '_' + str(classes[classIds[i]])
         # クラス名ごとにフォルダを生成する
         save_path = save_root_path + '/' + str(classes[classIds[i]])
+        save_image_path = save_path + '/' + 'images/'
+        save_txt_path = save_path + '/' + 'txt/'
 
         if not os.path.exists(save_root_path):
             os.mkdir(save_root_path)
         if not os.path.exists(save_path):
             os.mkdir(save_path)
+        if not os.path.exists(save_image_path):
+            os.mkdir(save_image_path)
+        if not os.path.exists(save_txt_path):
+            os.mkdir(save_txt_path)
 
         try:
-            cv.imwrite(save_path + '/' + filename + '.jpg', nonBB_image)
+            cv.imwrite(save_image_path + '/' + filename + '.jpg', nonBB_image)
             # BBtoolsと同じ形式に
             annotation = '1\n' + str(left) + ' ' + str(top) + ' ' + str(left + width) + ' ' + str(top + height) 
-            with open(save_path + '/' + filename + '.txt', mode='w') as f:
+            with open(save_txt_path + '/' + filename + '.txt', mode='w') as f:
                 f.write(annotation)
             drawPred(classIds[i], confidences[i], left, top, left + width, top + height, frame, save_path, filename)
         except Exception as e:
