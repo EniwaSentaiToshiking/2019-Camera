@@ -22,6 +22,13 @@ weights ファイルをダウンロードし，yolo/に置く．
 
 ## データセットの作り方
 
+- auto_annotation.py
+
+  - 自動データセット作成ツール
+  - 2018 の優秀なモデルを使用し，データセットを自動で作成する
+  - annotation_images/下にクラス名ごとのフォルダが作成される
+  - 各クラス/BBimages に BB 付き画像が保存されるので，ノイズを検出して対応するファイルを削除すること
+
 - 画像の配置
   - images 元画像
   - labels-fist 元ラベル
@@ -64,8 +71,9 @@ weights ファイルをダウンロードし，yolo/に置く．
 - ./darknet detector map data/config/learning.data data/config/learning.cfg 初期重み -gpus 0,1 >> map.txt
 
 ## fine tuning
+
 - 重みの切り出し方
- - ./darknet partial yolo/yolov3.cfg weights/yolov3.weights 2018robo.conv.81 81
- - 予めyolov3.cfgの548行目に、stopbacward=1を記入して出力層以外を切り出すこと
+- ./darknet partial yolo/yolov3.cfg weights/yolov3.weights 2018robo.conv.81 81
+- 予め yolov3.cfg の 548 行目に、stopbacward=1 を記入して出力層以外を切り出すこと
 - 学習方法
   - 通常どおり行う。初期重みをさっき作った奴にする
