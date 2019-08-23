@@ -1,0 +1,5 @@
+classes = 13
+train = data/config/train.txt
+valid = data/config/valid.txt
+names = data/config/learning.names
+backup = backup
