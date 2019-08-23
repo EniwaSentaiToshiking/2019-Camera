@@ -1,5 +1,5 @@
-black
-blue
-green
 red
+blue
 yellow
+green
+black
