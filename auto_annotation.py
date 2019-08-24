@@ -85,7 +85,11 @@ def postprocess(nonBB_image, frame, outs):
     save_root_path = "annotation_images"
 
     # Yoloで出力されるボックスの位置を出す
-    for i in indices:
+    for index, i in enumerate(indices):
+        # 1画像1オブジェクトを保つ
+        if index != 0:
+            continue
+
         i = i[0]
         box = boxes[i]
         left = box[0]
