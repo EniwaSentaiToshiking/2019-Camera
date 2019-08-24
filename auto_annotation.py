@@ -12,8 +12,8 @@ inpWidth = 416
 inpHeight = 416
 
 # VideoCapture を作成する。
-# camera_url = 'video/output_8_r.mp4'
-camera_url = 'http://192.168.11.100/?action=stream'
+camera_url = 'video/output_8_r.mp4'
+# camera_url = 'http://192.168.11.100/?action=stream'
 cap = cv.VideoCapture(camera_url)
 
 # VideoWriter を作成する。
