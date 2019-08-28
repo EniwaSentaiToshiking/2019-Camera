@@ -14,6 +14,7 @@ inpHeight = 416
 # VideoCapture を作成する。
 # camera_url = 'video/output_8_r.mp4'
 camera_url = 'http://192.168.11.100/?action=stream'
+# camera_url = 'http://169.254.16.205/?action=stream'
 cap = cv.VideoCapture(camera_url)
 
 # VideoWriter を作成する。
@@ -23,15 +24,15 @@ fps = cap.get(cv.CAP_PROP_FPS)
 fourcc = cv.VideoWriter_fourcc('m','p','4','v')
 
 # Yolo関連のモデルの読み込み
-modelConfiguration = "yolo/2018/yolov3.cfg"
-modelWeights = "yolo/2018/yolov3.weights"
+modelConfiguration = "yolo/0826/yolov3.cfg"
+modelWeights = "yolo/0826/yolov3_1000.weights"
 
 net = cv.dnn.readNetFromDarknet(modelConfiguration, modelWeights)
 net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
 net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
 
 # クラス名の読み込み
-classesFile = "yolo/2018/learning.names"
+classesFile = "yolo/0826/learning.names"
 classes = None
 with open(classesFile, 'rt') as f:
     classes = f.read().rstrip('\n').split('\n')

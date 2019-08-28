@@ -38,6 +38,21 @@ weights ファイルをダウンロードし，yolo/に置く．
   - annotation_images/下にクラス名ごとのフォルダが作成される
   - 各クラス/BBimages に BB 付き画像が保存されるので，ノイズを検出して対応するファイルを削除すること
 
+- tin-out-nnotation-images.py
+
+  - 自動的にアノテーションされた画像を間引くツール
+  - 画像と BBbox のテキストが削除される
+  - ウィンドウには，txt に基づいた BB 付きが表示される
+  - 別途 各クラス/BBimages を表示して，比較することを推奨する
+  - ファイルの構成は BBbox と同じ
+    - target-dir
+      - 001
+      - 002
+      - labels
+        - 001
+        - 002
+  - next や back で画像を表示し，delete ボタンで削除する
+
 - 画像の配置
   - images 元画像
   - labels-fist 元ラベル
