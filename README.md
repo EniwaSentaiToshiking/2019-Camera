@@ -111,6 +111,9 @@ weights ファイルをダウンロードし，yolo/に置く．
 - 途中経過は backup/
 - 推移は chart.png
 - ./darknet detector test data/config/learning.data data/config/learning.cfg 重み -gpus 0,1 任意の画像のパス
+- ex
+  - ./darknet detector train data/config/learning.data data/config/etrobo2019_block.cfg weights/darknet53.conv.74 -gpus 0,1 -map >> 0902.txt
+  - ./darknet detector map data/config/learning.data data/config/etrobo2019_block.cfg backup/etrobo2019_block_5000.weights -gpus 0,1 >> 0901_map.txt
 
 ## fine tuning
 

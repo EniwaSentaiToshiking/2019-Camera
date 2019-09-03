@@ -26,7 +26,7 @@ def main(data_dir, file_name, class_num, class_name, out_dir):
         rotate_img.append(img.transpose(1,0,2)[::-1])  # 270
 
     # ディレクトリを作り、回転イメージをリストに追加
-    trans_img.extend(rotate_img)
+    # trans_img.extend(rotate_img)
     if not os.path.exists("{0}/{1}".format(data_dir, out_dir)):
         os.makedirs("{0}/{1}".format(data_dir, out_dir))
     if not os.path.exists("{0}/rotation_numbers_labels".format(data_dir)):
