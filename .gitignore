@@ -30,6 +30,7 @@ test_yolo.py
 /images/
 /numbers/
 /annotation_images/
+/average_image/ave_image.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
