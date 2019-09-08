@@ -6,20 +6,21 @@ from yolo_object_model import YoloObjectModel as model
 class YOLO():
 
     # 初期化
-    confThreshold = 0.2
     nmsThreshold = 0.4
     inpWidth = 416
     inpHeight = 416
     rbyg = []
     black = []
 
-    def __init__(self, model_cfg_pass, model_weiight_pass, model_names_pass):
+    def __init__(self, model_cfg_pass, model_weiight_pass, model_names_pass, conf_threshold):
         # Yolo関連のモデルの読み込み
         self.modelConfiguration = model_cfg_pass
         self.modelWeights = model_weiight_pass
         # クラス名の読み込み
         self.classesFile = model_names_pass
         self.classes = None
+        # 閾値
+        self.conf_threshold = conf_threshold
         #
         self.net = cv.dnn.readNetFromDarknet(self.modelConfiguration, self.modelWeights)
         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
@@ -51,7 +52,7 @@ class YOLO():
                 scores = detection[5:]
                 classId = np.argmax(scores)
                 confidence = scores[classId]
-                if confidence > self.confThreshold:
+                if confidence > self.conf_threshold:
                     center_x = int(detection[0] * frameWidth)
                     center_y = int(detection[1] * frameHeight)
                     width = int(detection[2] * frameWidth)
@@ -62,7 +63,7 @@ class YOLO():
                     confidences.append(float(confidence))
                     boxes.append([left, top, width, height])
 
-        indices = cv.dnn.NMSBoxes(boxes, confidences, self.confThreshold, self.nmsThreshold)
+        indices = cv.dnn.NMSBoxes(boxes, confidences, self.conf_threshold, self.nmsThreshold)
 
         # Yoloで出力されるボックスの位置を出す
         for i in indices:
@@ -165,10 +166,15 @@ class YOLO():
         for object_model in object_models:
             # 中心位置取得
             center = tuple(np.array([int(object_model.clip_image.shape[1] * 0.5), int(object_model.clip_image.shape[0] * 0.5)]))
-            # opencvはbgr
-            r = object_model.clip_image[center][2]
-            g = object_model.clip_image[center][1]
-            b = object_model.clip_image[center][0]
+            try:
+                # opencvはbgr
+                r = object_model.clip_image[center][2]
+                g = object_model.clip_image[center][1]
+                b = object_model.clip_image[center][0]
+            except Exception as e: 
+                # IndexError: index 39 is out of bounds for axis 1 with size 32でコケる
+                print(e)
+                return object_models
             # 赤と緑の差に注目する
             if (abs(r - g) >= 40 ) and object_model.label == "yellow":
                 object_model.label = "red"

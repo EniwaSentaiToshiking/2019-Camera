@@ -18,18 +18,18 @@ fps = cap.get(cv.CAP_PROP_FPS)
 fourcc = cv.VideoWriter_fourcc('m','p','4','v')
 
 # カラーブロック
-block_model_cfg_pass = "yolo/2018/yolov3.cfg"
-block_model_weiight_pass = "yolo/2018/yolov3.weights"
-# model_cfg_pass = "yolo/0903/etrobo2019_block.cfg"
-# model_weiight_pass = "yolo/0903/etrobo2019_block_800.weights"
-block_model_names_pass = "yolo/0902/learning.names"
-yolo = YOLO(block_model_cfg_pass, block_model_weiight_pass, block_model_names_pass)
+# block_model_cfg_pass = "yolo/2018/yolov3.cfg"
+# block_model_weiight_pass = "yolo/2018/yolov3.weights"
+block_model_cfg_pass = "yolo/0905/etrobo2019_block.cfg"
+block_model_weiight_pass = "yolo/0905/etrobo2019_block_1100.weights"
+block_model_names_pass = "yolo/0905/learning.names"
+yolo = YOLO(block_model_cfg_pass, block_model_weiight_pass, block_model_names_pass, 0.3)
 
 # ボーナスナンバー
 number_model_cfg_pass = "yolo/0830/etrobo2019_number.cfg"
 number_model_weiight_pass = "yolo/0830/etrobo2019_number_820.weights"
 number_model_names_pass = "yolo/0830/learning.names"
-yolo_number = YOLO(number_model_cfg_pass, number_model_weiight_pass, number_model_names_pass)
+yolo_number = YOLO(number_model_cfg_pass, number_model_weiight_pass, number_model_names_pass, 0.2)
 
 # 録画周りの変数
 frame_count = 0
@@ -68,7 +68,7 @@ while True:
     # 4フレームごとに行う
     if frame_count == 4:
         input_image = create_average_image(images)
-        input_image = gamma_ccorrection(input_image)
+        # input_image = gamma_ccorrection(input_image)
 
         # カラーブロック
         drawed_image, object_models = yolo.postprocess(input_image)
