@@ -1,6 +1,7 @@
 class YoloObjectModel():
 
-    def __init__(self, label, score, left, right, top, bottom, clip_image):
+    def __init__(self, class_id, label, score, left, right, top, bottom, clip_image):
+        self.class_id = class_id
         self.label = label
         self.score = score
         self.left = left

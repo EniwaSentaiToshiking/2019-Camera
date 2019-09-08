@@ -6,7 +6,7 @@ from average_image import *
 from yolo import *
 
 # VideoCapture を作成する。
-camera_url = 'video/output_2.mp4'
+camera_url = 'video/output_1_a.mp4'
 # camera_url = 'http://192.168.11.100/?action=stream'
 # camera_url = 'http://169.254.16.205/?action=stream'
 cap = cv.VideoCapture(camera_url)
@@ -18,10 +18,10 @@ fps = cap.get(cv.CAP_PROP_FPS)
 fourcc = cv.VideoWriter_fourcc('m','p','4','v')
 
 # カラーブロック
-# block_model_cfg_pass = "yolo/2018/yolov3.cfg"
-# block_model_weiight_pass = "yolo/2018/yolov3.weights"
-block_model_cfg_pass = "yolo/0905/etrobo2019_block.cfg"
-block_model_weiight_pass = "yolo/0905/etrobo2019_block_1100.weights"
+block_model_cfg_pass = "yolo/2018/yolov3.cfg"
+block_model_weiight_pass = "yolo/2018/yolov3.weights"
+# block_model_cfg_pass = "yolo/0905/etrobo2019_block.cfg"
+# block_model_weiight_pass = "yolo/0905/etrobo2019_block_1100.weights"
 block_model_names_pass = "yolo/0905/learning.names"
 yolo = YOLO(block_model_cfg_pass, block_model_weiight_pass, block_model_names_pass, 0.3)
 

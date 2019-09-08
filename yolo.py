@@ -96,12 +96,13 @@ class YOLO():
         if self.classes:
             assert (classId < len(self.classes))
             score = label
-            # label = '%s:%s' % (self.classes[classId], label)
-            label = self.classes[classId]
+            label = '%s:%s' % (self.classes[classId], label)
+            # label = self.classes[classId]
 
         # modelのインスタンス
+        print(classId)
         clip_image = self.clip(frame, left, right, top, bottom)
-        object_model = model(label, score, left, right, top, bottom, clip_image)
+        object_model = model(classId, label, score, left, right, top, bottom, clip_image)
         # print(object_model.label)
 
         if self.classes[classId] == 'red':
@@ -176,9 +177,11 @@ class YOLO():
                 print(e)
                 return object_models
             # 赤と緑の差に注目する
-            if (abs(r - g) >= 40 ) and object_model.label == "yellow":
+            if (abs(r - g) >= 40 ) and object_model.class_id == 2:
+                object_model.class_id = 0
                 object_model.label = "red"
-            if (abs(r - g) < 40) and object_model.label == "red":
+            if (abs(r - g) < 40) and object_model.class_id == 0:
+                object_model.class_id = 2
                 object_model.label = "yellow"
         
         return object_models
