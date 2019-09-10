@@ -100,7 +100,6 @@ class YOLO():
             # label = self.classes[classId]
 
         # modelのインスタンス
-        print(classId)
         clip_image = self.clip(frame, left, right, top, bottom)
         object_model = model(classId, label, score, left, right, top, bottom, clip_image)
         # print(object_model.label)
@@ -174,9 +173,13 @@ class YOLO():
                 b = object_model.clip_image[center][0]
             except Exception as e: 
                 # IndexError: index 39 is out of bounds for axis 1 with size 32でコケる
-                print(e)
+                # print(e)
                 return object_models
             # 赤と緑の差に注目する
+            if object_model.class_id == 3:
+                print("green", r, g, b)
+            # if object_model.class_id == 4:
+            #     print("black", r, g, b)
             if (abs(r - g) >= 40 ) and object_model.class_id == 2:
                 object_model.class_id = 0
                 object_model.label = "red"

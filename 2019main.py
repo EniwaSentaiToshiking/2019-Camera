@@ -6,9 +6,13 @@ from average_image import *
 from yolo import *
 
 # VideoCapture を作成する。
-camera_url = 'video/output_1_a.mp4'
+# camera_url = 'video/output_1_a.mp4'
 # camera_url = 'http://192.168.11.100/?action=stream'
-# camera_url = 'http://169.254.16.205/?action=stream'
+# R
+camera_url = 'http://169.254.16.205/?action=stream'
+# L
+# camera_url = 'http://169.254.161.93/?action=stream'
+
 cap = cv.VideoCapture(camera_url)
 
 # VideoWriter を作成する。
@@ -23,13 +27,13 @@ block_model_weiight_pass = "yolo/2018/yolov3.weights"
 # block_model_cfg_pass = "yolo/0905/etrobo2019_block.cfg"
 # block_model_weiight_pass = "yolo/0905/etrobo2019_block_1100.weights"
 block_model_names_pass = "yolo/0905/learning.names"
-yolo = YOLO(block_model_cfg_pass, block_model_weiight_pass, block_model_names_pass, 0.3)
+yolo = YOLO(block_model_cfg_pass, block_model_weiight_pass, block_model_names_pass, 0.1)
 
 # ボーナスナンバー
 number_model_cfg_pass = "yolo/0830/etrobo2019_number.cfg"
 number_model_weiight_pass = "yolo/0830/etrobo2019_number_820.weights"
 number_model_names_pass = "yolo/0830/learning.names"
-yolo_number = YOLO(number_model_cfg_pass, number_model_weiight_pass, number_model_names_pass, 0.2)
+yolo_number = YOLO(number_model_cfg_pass, number_model_weiight_pass, number_model_names_pass, 0.1)
 
 # 録画周りの変数
 frame_count = 0
@@ -41,7 +45,7 @@ def gamma_ccorrection(image):
     if isinstance(image, np.ndarray) != True:
         raise Exception('not match type gamma_ccorrection!')
 
-    gamma = 1.2
+    gamma = 1.5
 
     gamma_cvt = np.zeros((256, 1), dtype='uint8')
 
@@ -62,11 +66,11 @@ while True:
         cv.waitKey(3000)
         break  # 映像取得に失敗
 
-    if frame_count < 4:
+    if frame_count < 10:
         images.append(frame)
 
     # 4フレームごとに行う
-    if frame_count == 4:
+    if frame_count == 10:
         input_image = create_average_image(images)
         # input_image = gamma_ccorrection(input_image)
 
