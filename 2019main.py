@@ -4,12 +4,14 @@ import os
 
 from average_image import *
 from yolo import *
+from filters.equalize_hist_color import *
+from filters.gamma_ccorrection import *
 
 # VideoCapture を作成する。
-# camera_url = 'video/output_1_a.mp4'
+camera_url = 'output2_bad.mp4'
 # camera_url = 'http://192.168.11.100/?action=stream'
 # R
-camera_url = 'http://169.254.16.205/?action=stream'
+# camera_url = 'http://169.254.16.205/?action=stream'
 # L
 # camera_url = 'http://169.254.161.93/?action=stream'
 
@@ -41,21 +43,6 @@ record_flag = False
 # 平均画像を作るようの配列
 images = []
 
-def gamma_ccorrection(image):
-    if isinstance(image, np.ndarray) != True:
-        raise Exception('not match type gamma_ccorrection!')
-
-    gamma = 1.5
-
-    gamma_cvt = np.zeros((256, 1), dtype='uint8')
-
-    for i in range(256):
-        gamma_cvt[i][0] = 255 * (float(i) / 255) ** (1.0 / gamma)
-
-    img_gamma = cv.LUT(image, gamma_cvt)
-
-    return img_gamma
-
 while True:
     # ビデオ情報の読み込み
     hasFrame, frame = cap.read()
@@ -72,7 +59,8 @@ while True:
     # 4フレームごとに行う
     if frame_count == 10:
         input_image = create_average_image(images)
-        # input_image = gamma_ccorrection(input_image)
+        # input_image = gamma_ccorrection(input_image, 1.5)
+        input_image = equalize_hist_color(input_image)
 
         # カラーブロック
         drawed_image, object_models = yolo.postprocess(input_image)
