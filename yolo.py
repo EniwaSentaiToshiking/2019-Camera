@@ -3,7 +3,8 @@ import numpy as np
 
 from yolo_object_model import YoloObjectModel as model
 
-class YOLO():
+
+class YOLO:
 
     # 初期化
     nmsThreshold = 0.4
@@ -12,7 +13,9 @@ class YOLO():
     rbyg = []
     black = []
 
-    def __init__(self, model_cfg_pass, model_weiight_pass, model_names_pass, conf_threshold):
+    def __init__(
+        self, model_cfg_pass, model_weiight_pass, model_names_pass, conf_threshold
+    ):
         # Yolo関連のモデルの読み込み
         self.modelConfiguration = model_cfg_pass
         self.modelWeights = model_weiight_pass
@@ -25,9 +28,9 @@ class YOLO():
         self.net = cv.dnn.readNetFromDarknet(self.modelConfiguration, self.modelWeights)
         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
         self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
-        with open(self.classesFile, 'rt') as f:
-            self.classes = f.read().rstrip('\n').split('\n')
-    
+        with open(self.classesFile, "rt") as f:
+            self.classes = f.read().rstrip("\n").split("\n")
+
     # レイヤーの出力名を取得する
     def getOutputsNames(self):
         layersNames = self.net.getLayerNames()
@@ -39,7 +42,9 @@ class YOLO():
         object_models = []
         drawed_image = np.empty(1)
 
-        blob = cv.dnn.blobFromImage(frame, 1 / 255, (self.inpWidth, self.inpHeight), [0, 0, 0], 1, crop=False)
+        blob = cv.dnn.blobFromImage(
+            frame, 1 / 255, (self.inpWidth, self.inpHeight), [0, 0, 0], 1, crop=False
+        )
         self.net.setInput(blob)
         outs = self.net.forward(self.getOutputsNames())
         frameHeight = frame.shape[0]
@@ -63,7 +68,9 @@ class YOLO():
                     confidences.append(float(confidence))
                     boxes.append([left, top, width, height])
 
-        indices = cv.dnn.NMSBoxes(boxes, confidences, self.conf_threshold, self.nmsThreshold)
+        indices = cv.dnn.NMSBoxes(
+            boxes, confidences, self.conf_threshold, self.nmsThreshold
+        )
 
         # Yoloで出力されるボックスの位置を出す
         for i in indices:
@@ -74,15 +81,23 @@ class YOLO():
             width = box[2]
             height = box[3]
 
-            drawed_image, object_model = self.drawPred(classIds[i], confidences[i], left, top, left + width, top + height, frame)
+            drawed_image, object_model = self.drawPred(
+                classIds[i],
+                confidences[i],
+                left,
+                top,
+                left + width,
+                top + height,
+                frame,
+            )
             object_models.append(object_model)
-        
+
         return drawed_image, object_models
-    
+
     def clip(self, image, left, right, top, bottom):
 
         # トリミングする範囲 y:y+height,x:x+width
-        cliped_image = image[top:bottom+1, left:right+1]
+        cliped_image = image[top : bottom + 1, left : right + 1]
 
         return cliped_image
 
@@ -91,49 +106,79 @@ class YOLO():
         # Draw a bounding box.
         cv.rectangle(frame, (left, top), (right, bottom), (255, 178, 50), 3)
 
-        label = '%.2f' % conf
+        label = "%.2f" % conf
         score = 0.0
         if self.classes:
-            assert (classId < len(self.classes))
+            assert classId < len(self.classes)
             score = label
-            label = '%s:%s' % (self.classes[classId], label)
+            label = "%s:%s" % (self.classes[classId], label)
             # label = self.classes[classId]
 
         # modelのインスタンス
         clip_image = self.clip(frame, left, right, top, bottom)
-        object_model = model(classId, label, score, left, right, top, bottom, clip_image)
+        object_model = model(
+            classId, label, score, left, right, top, bottom, clip_image
+        )
         # print(object_model.label)
 
-        if self.classes[classId] == 'red':
+        if self.classes[classId] == "red":
             self.rbyg.append([left, top, right, bottom, 1])
-        elif self.classes[classId] == 'blue':
+        elif self.classes[classId] == "blue":
             self.rbyg.append([left, top, right, bottom, 2])
-        elif self.classes[classId] == 'yellow':
+        elif self.classes[classId] == "yellow":
             self.rbyg.append([left, top, right, bottom, 3])
-        elif self.classes[classId] == 'green':
+        elif self.classes[classId] == "green":
             self.rbyg.append([left, top, right, bottom, 4])
-        elif self.classes[classId] == 'black':
+        elif self.classes[classId] == "black":
             self.black.append([left, top, right, bottom])
 
         # Display the label at the top of the bounding box
         labelSize, baseLine = cv.getTextSize(label, cv.FONT_HERSHEY_SIMPLEX, 0.5, 1)
         top = max(top, labelSize[1])
-        cv.rectangle(frame, (left, top - round(1.5 * labelSize[1])), (left + round(1.5 * labelSize[0]), top + baseLine),
-                    (255, 255, 255), cv.FILLED)
-        cv.putText(frame, label, (left, top), cv.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
+        cv.rectangle(
+            frame,
+            (left, top - round(1.5 * labelSize[1])),
+            (left + round(1.5 * labelSize[0]), top + baseLine),
+            (255, 255, 255),
+            cv.FILLED,
+        )
+        cv.putText(
+            frame, label, (left, top), cv.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1
+        )
 
         return frame, object_model
-    
+
     def debugDraw(self, image, model):
         # Draw a bounding box.
-        cv.rectangle(image, (model.left, model.top), (model.right, model.bottom), (255, 178, 50), 3)
+        cv.rectangle(
+            image,
+            (model.left, model.top),
+            (model.right, model.bottom),
+            (255, 178, 50),
+            3,
+        )
         # Display the label at the top of the bounding box
-        labelSize, baseLine = cv.getTextSize(model.label, cv.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+        labelSize, baseLine = cv.getTextSize(
+            model.label, cv.FONT_HERSHEY_SIMPLEX, 0.5, 1
+        )
         top = max(model.top, labelSize[1])
-        cv.rectangle(image, (model.left, top - round(1.5 * labelSize[1])), (model.left + round(1.5 * labelSize[0]), top + baseLine),
-                    (255, 255, 255), cv.FILLED)
-        cv.putText(image, model.label, (model.left, top), cv.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
-    
+        cv.rectangle(
+            image,
+            (model.left, top - round(1.5 * labelSize[1])),
+            (model.left + round(1.5 * labelSize[0]), top + baseLine),
+            (255, 255, 255),
+            cv.FILLED,
+        )
+        cv.putText(
+            image,
+            model.label,
+            (model.left, top),
+            cv.FONT_HERSHEY_SIMPLEX,
+            0.75,
+            (0, 0, 0),
+            1,
+        )
+
         return image
 
     # 重複を削除する
@@ -147,49 +192,64 @@ class YOLO():
         deleteObjectModels = []
         for index, objectModel in enumerate(sorted_object_models):
             for comparisonIndex in range(index + 1, len(sorted_object_models)):
-                rect = np.array([[objectModel.left, objectModel.top],
-                                    [objectModel.left, objectModel.bottom],
-                                    [objectModel.right, objectModel.bottom],
-                                    [objectModel.right, objectModel.top]])
+                rect = np.array(
+                    [
+                        [objectModel.left, objectModel.top],
+                        [objectModel.left, objectModel.bottom],
+                        [objectModel.right, objectModel.bottom],
+                        [objectModel.right, objectModel.top],
+                    ]
+                )
 
-                centralCoordinate = sorted_object_models[comparisonIndex].calcCcntralCoordinate()
-            if cv.pointPolygonTest(rect, (centralCoordinate["x"], centralCoordinate["y"]), False) >= 0:
+                centralCoordinate = sorted_object_models[
+                    comparisonIndex
+                ].calcCcntralCoordinate()
+            if (
+                cv.pointPolygonTest(
+                    rect, (centralCoordinate["x"], centralCoordinate["y"]), False
+                )
+                >= 0
+            ):
                 deleteObjectModels.append(sorted_object_models[comparisonIndex])
 
         for target in set(deleteObjectModels):
             sorted_object_models.remove(target)
 
         return sorted_object_models
-    
+
     # 色の誤識別を修正する
     def fix_color(self, object_models):
         for object_model in object_models:
             # 中心位置取得
-            center = tuple(np.array([int(object_model.clip_image.shape[1] * 0.5), int(object_model.clip_image.shape[0] * 0.5)]))
+            center = tuple(
+                np.array(
+                    [
+                        int(object_model.clip_image.shape[1] * 0.5),
+                        int(object_model.clip_image.shape[0] * 0.5),
+                    ]
+                )
+            )
             try:
                 # opencvはbgr
                 r = object_model.clip_image[center][2]
                 g = object_model.clip_image[center][1]
                 b = object_model.clip_image[center][0]
-            except Exception as e: 
+            except Exception as e:
                 # IndexError: index 39 is out of bounds for axis 1 with size 32でコケる
                 # print(e)
                 return object_models
             # 赤と緑の差に注目する
-            if object_model.class_id == 3:
-                print("green", r, g, b)
-            # if object_model.class_id == 4:
-            #     print("black", r, g, b)
-            if (abs(r - g) >= 40 ) and object_model.class_id == 2:
+            if (abs(r - g) >= 40) and object_model.class_id == 2:
                 object_model.class_id = 0
                 object_model.label = "red"
             if (abs(r - g) < 40) and object_model.class_id == 0:
                 object_model.class_id = 2
                 object_model.label = "yellow"
-        
+
         return object_models
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     model_cfg_pass = "yolo/0903/etrobo2019_block.cfg"
     model_weiight_pass = "yolo/0903/etrobo2019_block_800.weights"
     model_names_pass = "yolo/0902/learning.names"
