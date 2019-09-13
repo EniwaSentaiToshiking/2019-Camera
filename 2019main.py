@@ -6,9 +6,10 @@ from average_image import *
 from yolo import *
 from filters.equalize_hist_color import *
 from filters.gamma_ccorrection import *
+from GUI import GUI
 
 # VideoCapture を作成する。
-camera_url = 'output2_bad.mp4'
+camera_url = 'output7.mp4'
 # camera_url = 'http://192.168.11.100/?action=stream'
 # R
 # camera_url = 'http://169.254.16.205/?action=stream'
@@ -43,6 +44,15 @@ record_flag = False
 # 平均画像を作るようの配列
 images = []
 
+# 取得動画からサークルの座標を取得することに関するクラス
+GUI = GUI()
+
+winName = GUI.winName
+
+# 描画を行う上での初期設定
+GUI.make_window()
+frame_count = 1
+
 while True:
     # ビデオ情報の読み込み
     hasFrame, frame = cap.read()
@@ -58,9 +68,12 @@ while True:
 
     # 4フレームごとに行う
     if frame_count == 10:
-        input_image = create_average_image(images)
-        # input_image = gamma_ccorrection(input_image, 1.5)
-        input_image = equalize_hist_color(input_image)
+        # input_image = create_average_image(images) 
+        # input_image = gamma_ccorrection(input_image, 1.5) 
+        # input_image = equalize_hist_color(input_image)
+        input_image = equalize_hist_color(frame)  
+
+        GUI.display_click_point(frame)
 
         # カラーブロック
         drawed_image, object_models = yolo.postprocess(input_image)
@@ -78,11 +91,15 @@ while True:
             # print(i.label)
             original_frame = yolo.debugDraw(original_frame, hoge)
         # print("---------")
-        cv.imshow('Frame', original_frame)
+
+        GUI.create_trackbar(frame)
+        cv.imshow(winName, original_frame)
         # 平均画像周り
         frame_count = -1
         images.clear()
     frame_count+=1
+
+    cv.setMouseCallback(winName, GUI.mouse_event, [winName, frame])
 
     # ボタン押下時のイベント作成
     key = cv.waitKey(1) & 0xff
