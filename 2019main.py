@@ -1,12 +1,13 @@
 import cv2 as cv
 import numpy as np
 import os
+import copy
 
 from average_image import *
 from yolo import *
 from filters.equalize_hist_color import *
 from filters.gamma_ccorrection import *
-from calibration import Calibration
+from calibration import Calibration, State
 from filters.unsharp_masking import *
 from filters.background_subtractor import *
 
@@ -64,7 +65,6 @@ frame_count = 1
 while True:
     # ビデオ情報の読み込み
     hasFrame, frame = cap.read()
-    original_frame = frame
 
     if not hasFrame:
         print("エラー：ビデオカメラの情報がありません")
@@ -76,9 +76,10 @@ while True:
 
     if frame_count < 10:
         images.append(frame)
-        calibration.draw_click_points(frame)
+        # copy.deepcopy()を使って値渡しにしないと，打った点が検出の邪魔になる
+        calibration.draw_click_points(copy.deepcopy(frame))
 
-    # 4フレームごとに行う
+    # 10フレームごとに行う
     if frame_count == 10:
         input_image = create_average_image(images)
         # 処理能力が足りないと詰むので
@@ -98,18 +99,22 @@ while True:
         _, number_models = yolo_number.postprocess(input_image)
         deduplication_number_models = yolo_number.deduplication(number_models)
 
-        for hoge in number_models:
-            original_frame = yolo_number.debugDraw(original_frame, hoge)
+        for number_model in number_models:
+            frame = yolo_number.debugDraw(frame, number_model)
 
-        for hoge in fixed_color_object_models:
-            original_frame = yolo.debugDraw(original_frame, hoge)
+        for fixed_color_object_model in fixed_color_object_models:
+            frame = yolo.debugDraw(frame, fixed_color_object_model)
 
-        calibration.draw_click_points(frame)
-        cv.imshow(winName, original_frame)
+        # copy.deepcopy()を使って値渡しにしないと，打った点が検出の邪魔になる
+        calibration.draw_click_points(copy.deepcopy(frame))
 
         # 平均画像周り
         frame_count = -1
         images.clear()
+
+        if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
+            print("try association")
+
     frame_count += 1
 
     cv.setMouseCallback(winName, calibration.click_point)
