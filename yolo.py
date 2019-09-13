@@ -148,7 +148,7 @@ class YOLO:
 
         return frame, object_model
 
-    def debugDraw(self, image, model):
+    def draw_BBBox(self, image, model):
         # Draw a bounding box.
         cv.rectangle(
             image,

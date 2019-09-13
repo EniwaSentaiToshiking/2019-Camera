@@ -1,14 +1,25 @@
 import cv2 as cv
 import numpy as np
-import copy
 from enum import Enum
+
+from yolo_object_model import YoloObjectModel as model
 
 
 class State(Enum):
-    in_calibration = 0
-    wait_yolo = 1
-    in_association = 2
-    finish = 3
+    in_calibration = "in_calibration"
+    wait_yolo = "wait_yolo"
+    in_association = "in_association"
+    in_adjustment = "in_adjustment"
+    finish = "finish"
+
+
+class CalibrationModel:
+    # YoloObjectModel
+    model = None
+
+    def __init__(self, position_x, position_y):
+        self.position_x = position_x
+        self.position_y = position_y
 
 
 class Calibration:
@@ -34,29 +45,34 @@ class Calibration:
     # クリックした箇所をサークルと判定する 最初に交点サークル(初期にブロックが配置されている部分のみ)を8回 次にブロックサークルを8回
     def click_point(self, event, x, y, flags, params):
         if event == cv.EVENT_LBUTTONUP:
+            calibration_model = CalibrationModel(x, y)
             if len(self.first_set_block_positions) < 8:
-                self.first_set_block_positions.append([x, y])
+                self.first_set_block_positions.append(calibration_model)
             elif len(self.block_circle_positions) < 8:
-                self.block_circle_positions.append([x, y])
+                self.block_circle_positions.append(calibration_model)
 
     # クリックした地点を表示する 初期ブロック位置は赤点 ブロックサークルは青点
     def draw_click_points(self, frame):
-        for i in self.first_set_block_positions:
-            cv.circle(frame, (i[0], i[1]), 3, (0, 0, 255), 3)
+        for position in self.first_set_block_positions:
+            cv.circle(
+                frame, (position.position_x, position.position_y), 3, (0, 0, 255), 3
+            )
 
-        for i in self.block_circle_positions:
-            cv.circle(frame, (i[0], i[1]), 3, (255, 0, 0), 3)
+        for position in self.block_circle_positions:
+            cv.circle(
+                frame, (position.position_x, position.position_y), 3, (255, 0, 0), 3
+            )
 
         cv.imshow(self.winName, frame)
 
     def finish_display_click_point(self):
-        print("hoge")
         self.state = State.wait_yolo
 
     def clear_display_click_point(self):
-        print("fuga")
         self.first_set_block_positions.clear()
         self.block_circle_colors.clear()
+
+    # def association(self, color_object_models):
 
 
 # if __name__ == "__main__":

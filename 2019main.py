@@ -100,10 +100,10 @@ while True:
         deduplication_number_models = yolo_number.deduplication(number_models)
 
         for number_model in number_models:
-            frame = yolo_number.debugDraw(frame, number_model)
+            frame = yolo_number.draw_BBBox(frame, number_model)
 
         for fixed_color_object_model in fixed_color_object_models:
-            frame = yolo.debugDraw(frame, fixed_color_object_model)
+            frame = yolo.draw_BBBox(frame, fixed_color_object_model)
 
         # copy.deepcopy()を使って値渡しにしないと，打った点が検出の邪魔になる
         calibration.draw_click_points(copy.deepcopy(frame))
@@ -112,6 +112,7 @@ while True:
         frame_count = -1
         images.clear()
 
+        # yoloの結果とcalibrationのstateから判断して，対応付に向かう
         if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
             print("try association")
 
