@@ -5,11 +5,12 @@ name = "pypi"
 
 [packages]
 pillow = "*"
-opencv-python = "*"
 scipy = "*"
+opencv-python = "==4.1.0.25"
+opencv-contrib-python = "==4.1.0.25"
 
 [dev-packages]
-pylint = "*"
+black = "*"
 
 [requires]
 python_version = "3.5"

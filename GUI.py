@@ -23,7 +23,6 @@ class GUI ():
         
     # クリックした箇所をサークルと判定する 最初に交点サークル(初期にブロックが配置されている部分のみ)を8回 次にブロックサークルを8回
     def mouse_event(self, event, x, y, flags, params):
-        winName, frame = params
         if event == cv.EVENT_LBUTTONUP:
             if len(self.first_set_block_positions) < 8:
                 self.first_set_block_positions.append([x, y])
