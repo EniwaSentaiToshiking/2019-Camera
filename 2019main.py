@@ -6,7 +6,7 @@ from average_image import *
 from yolo import *
 from filters.equalize_hist_color import *
 from filters.gamma_ccorrection import *
-from GUI import GUI
+from calibration import Calibration
 from filters.unsharp_masking import *
 from filters.background_subtractor import *
 
@@ -20,7 +20,7 @@ camera_url = "http://169.254.16.205/?action=stream"
 
 
 # VideoCapture を作成する。
-camera_url = 'output7.mp4'
+# camera_url = "output7.mp4"
 
 cap = cv.VideoCapture(camera_url)
 
@@ -53,12 +53,12 @@ record_flag = False
 images = []
 
 # 取得動画からサークルの座標を取得することに関するクラス
-GUI = GUI()
+calibration = Calibration()
 
-winName = GUI.winName
+winName = calibration.winName
 
 # 描画を行う上での初期設定
-GUI.make_window()
+calibration.make_window()
 frame_count = 1
 
 while True:
@@ -76,13 +76,14 @@ while True:
 
     if frame_count < 10:
         images.append(frame)
+        calibration.draw_click_points(frame)
 
     # 4フレームごとに行う
     if frame_count == 10:
         input_image = create_average_image(images)
         # 処理能力が足りないと詰むので
-        if input_image == None:
-            input_image = frame
+        # if input_image == None:
+        #     input_image = frame
         input_image = equalize_hist_color(input_image)
         # input_image = gamma_ccorrection(input_image, 0.8)
         # input_image = unsharp_masking(input_image)
@@ -101,20 +102,17 @@ while True:
             original_frame = yolo_number.debugDraw(original_frame, hoge)
 
         for hoge in fixed_color_object_models:
-            # print(i.label)
             original_frame = yolo.debugDraw(original_frame, hoge)
-        # print("---------")
 
-        GUI.display_click_point(frame)
-        GUI.create_trackbar(frame)
+        calibration.draw_click_points(frame)
         cv.imshow(winName, original_frame)
-       
+
         # 平均画像周り
         frame_count = -1
         images.clear()
     frame_count += 1
 
-    cv.setMouseCallback(winName, GUI.mouse_event)
+    cv.setMouseCallback(winName, calibration.click_point)
 
     # ボタン押下時のイベント作成
     key = cv.waitKey(1) & 0xFF
@@ -128,6 +126,10 @@ while True:
     # 録画終了
     if key == ord("s"):
         writer.release()
+    if key == ord("f"):
+        calibration.finish_display_click_point()
+    if key == ord("c"):
+        calibration.clear_display_click_point()
     # システム終了
     if key == ord("q"):
         cv.destroyAllWindows()
