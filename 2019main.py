@@ -114,7 +114,24 @@ while True:
 
         # yoloの結果とcalibrationのstateから判断して，対応付に向かう
         if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
+            color_object_models = copy.deepcopy(fixed_color_object_models)
             print("try association")
+            calibration.state = State.in_association
+            for color_object_model in color_object_models:
+                calibration.association(color_object_model)
+
+            calibration.state = State.in_adjustment
+            for i, hoge in enumerate(calibration.first_set_block_positions):
+                if hoge.model == None:
+                    print("none", i)
+                else:
+                    print(i, hoge.model.label)
+
+            for i, hoge in enumerate(calibration.block_circle_positions):
+                if hoge.model == None:
+                    print("none", i)
+                else:
+                    print(i, hoge.model.label)
 
     frame_count += 1
 

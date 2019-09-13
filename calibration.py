@@ -65,14 +65,60 @@ class Calibration:
 
         cv.imshow(self.winName, frame)
 
+    # 点打ち終わり
     def finish_display_click_point(self):
         self.state = State.wait_yolo
 
+    # 点打ちやり直し
     def clear_display_click_point(self):
         self.first_set_block_positions.clear()
         self.block_circle_colors.clear()
 
-    # def association(self, color_object_models):
+    # 対応付け
+    def association(self, color_object_model):
+        for calibration_model in self.first_set_block_positions:
+            # YOLOで検出したオブジェクトを囲む短形を作成
+            rect = np.array(
+                [
+                    [color_object_model.left, color_object_model.top],
+                    [color_object_model.left, color_object_model.bottom],
+                    [color_object_model.right, color_object_model.bottom],
+                    [color_object_model.right, color_object_model.top],
+                ]
+            )
+
+            if (
+                # 座標が四角形の内側にあるかどうか
+                cv.pointPolygonTest(
+                    rect,
+                    (calibration_model.position_x, calibration_model.position_y),
+                    False,
+                )
+                >= 0
+            ):
+                calibration_model.model = color_object_model
+
+        for calibration_model in self.block_circle_positions:
+            # YOLOで検出したオブジェクトを囲む短形を作成
+            rect = np.array(
+                [
+                    [color_object_model.left, color_object_model.top],
+                    [color_object_model.left, color_object_model.bottom],
+                    [color_object_model.right, color_object_model.bottom],
+                    [color_object_model.right, color_object_model.top],
+                ]
+            )
+
+            if (
+                # 座標が四角形の内側にあるかどうか
+                cv.pointPolygonTest(
+                    rect,
+                    (calibration_model.position_x, calibration_model.position_y),
+                    False,
+                )
+                >= 0
+            ):
+                calibration_model.model = color_object_model
 
 
 # if __name__ == "__main__":
