@@ -148,7 +148,7 @@ class YOLO:
 
         return frame, object_model
 
-    def debugDraw(self, image, model):
+    def draw_BBBox(self, image, model):
         # Draw a bounding box.
         cv.rectangle(
             image,
@@ -224,25 +224,25 @@ class YOLO:
             center = tuple(
                 np.array(
                     [
-                        int(object_model.clip_image.shape[1] * 0.5),
                         int(object_model.clip_image.shape[0] * 0.5),
+                        int(object_model.clip_image.shape[1] * 0.5),
                     ]
                 )
             )
             try:
                 # opencvはbgr
-                r = object_model.clip_image[center][2]
-                g = object_model.clip_image[center][1]
-                b = object_model.clip_image[center][0]
+                r = int(object_model.clip_image[center][2])
+                g = int(object_model.clip_image[center][1])
+                b = int(object_model.clip_image[center][0])
             except Exception as e:
                 # IndexError: index 39 is out of bounds for axis 1 with size 32でコケる
                 # print(e)
                 return object_models
             # 赤と緑の差に注目する
-            if (abs(r - g) >= 40) and object_model.class_id == 2:
+            if (abs(r - g) >= 50) and object_model.class_id == 2:
                 object_model.class_id = 0
                 object_model.label = "red"
-            if (abs(r - g) < 40) and object_model.class_id == 0:
+            if (abs(r - g) < 50) and object_model.class_id == 0:
                 object_model.class_id = 2
                 object_model.label = "yellow"
 
