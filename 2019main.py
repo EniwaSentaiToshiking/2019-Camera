@@ -167,8 +167,10 @@ while True:
         writer.release()
     if key == ord("f"):
         calibration.finish_display_click_point()
+        print("finish draw points")
     if key == ord("c"):
         calibration.clear_display_click_point()
+        print("clear draw points")
     # システム終了
     if key == ord("q"):
         cv.destroyAllWindows()

@@ -231,9 +231,9 @@ class YOLO:
             )
             try:
                 # opencvはbgr
-                r = object_model.clip_image[center][2]
-                g = object_model.clip_image[center][1]
-                b = object_model.clip_image[center][0]
+                r = int(object_model.clip_image[center][2])
+                g = int(object_model.clip_image[center][1])
+                b = int(object_model.clip_image[center][0])
             except Exception as e:
                 # IndexError: index 39 is out of bounds for axis 1 with size 32でコケる
                 # print(e)

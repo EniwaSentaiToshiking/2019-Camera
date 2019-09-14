@@ -106,51 +106,37 @@ class Calibration:
         self.intersection_circle_positions.clear()
         self.block_circle_positions.clear()
 
+    @classmethod
+    # 対応付け
+    def _association_logic(self, color_object_model, calibration_model):
+        # YOLOで検出したオブジェクトを囲む短形を作成
+        rect = np.array(
+            [
+                [color_object_model.left, color_object_model.top],
+                [color_object_model.left, color_object_model.bottom],
+                [color_object_model.right, color_object_model.bottom],
+                [color_object_model.right, color_object_model.top],
+            ]
+        )
+
+        if (
+            # 座標が四角形の内側にあるかどうか
+            cv.pointPolygonTest(
+                rect,
+                (calibration_model.position_x, calibration_model.position_y),
+                False,
+            )
+            >= 0
+        ):
+            calibration_model.model = color_object_model
+
     # 対応付け
     def association(self, color_object_model):
         for calibration_model in self.intersection_circle_positions:
-            # YOLOで検出したオブジェクトを囲む短形を作成
-            rect = np.array(
-                [
-                    [color_object_model.left, color_object_model.top],
-                    [color_object_model.left, color_object_model.bottom],
-                    [color_object_model.right, color_object_model.bottom],
-                    [color_object_model.right, color_object_model.top],
-                ]
-            )
-
-            if (
-                # 座標が四角形の内側にあるかどうか
-                cv.pointPolygonTest(
-                    rect,
-                    (calibration_model.position_x, calibration_model.position_y),
-                    False,
-                )
-                >= 0
-            ):
-                calibration_model.model = color_object_model
+            self._association_logic(color_object_model, calibration_model)
 
         for calibration_model in self.block_circle_positions:
-            # YOLOで検出したオブジェクトを囲む短形を作成
-            rect = np.array(
-                [
-                    [color_object_model.left, color_object_model.top],
-                    [color_object_model.left, color_object_model.bottom],
-                    [color_object_model.right, color_object_model.bottom],
-                    [color_object_model.right, color_object_model.top],
-                ]
-            )
-
-            if (
-                # 座標が四角形の内側にあるかどうか
-                cv.pointPolygonTest(
-                    rect,
-                    (calibration_model.position_x, calibration_model.position_y),
-                    False,
-                )
-                >= 0
-            ):
-                calibration_model.model = color_object_model
+            self._association_logic(color_object_model, calibration_model)
 
     @classmethod
     def _color_id(self, colorList):
@@ -164,6 +150,7 @@ class Calibration:
             return 3, "green"
 
     @classmethod
+    # 最後の悪あがき
     def _adjustment_Logic(self, calibration_model, frame, circle_type):
         # ブロックサークル上には2つしかない 調整して検出したいのは1つ
         block_circle_ajust_count = 0
