@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 import os
 import copy
+import serial
 
 from average_image import *
 from yolo import *
