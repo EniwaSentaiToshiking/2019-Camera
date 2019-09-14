@@ -239,10 +239,10 @@ class YOLO:
                 # print(e)
                 return object_models
             # 赤と緑の差に注目する
-            if (abs(r - g) >= 40) and object_model.class_id == 2:
+            if (abs(r - g) >= 50) and object_model.class_id == 2:
                 object_model.class_id = 0
                 object_model.label = "red"
-            if (abs(r - g) < 40) and object_model.class_id == 0:
+            if (abs(r - g) < 50) and object_model.class_id == 0:
                 object_model.class_id = 2
                 object_model.label = "yellow"
 
