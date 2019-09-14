@@ -224,8 +224,8 @@ class YOLO:
             center = tuple(
                 np.array(
                     [
-                        int(object_model.clip_image.shape[1] * 0.5),
                         int(object_model.clip_image.shape[0] * 0.5),
+                        int(object_model.clip_image.shape[1] * 0.5),
                     ]
                 )
             )

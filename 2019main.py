@@ -82,6 +82,8 @@ while True:
     # 10フレームごとに行う
     if frame_count == 10:
         input_image = create_average_image(images)
+        # 最後の微調整用
+        for_adjustment_iamge = copy.deepcopy(input_image)
         # 処理能力が足りないと詰むので
         # if input_image == None:
         #     input_image = frame
@@ -93,6 +95,15 @@ while True:
         # カラーブロック
         drawed_image, object_models = yolo.postprocess(input_image)
         deduplication_object_models = yolo.deduplication(object_models)
+
+        # for hoge in deduplication_object_models:
+        #     img = hoge.clip_image
+        #     label = hoge.label
+        #     try:
+        #         print(label, img[int(img.shape[0] * 0.5), int(img.shape[1] * 0.5)])
+        #     except Exception as e:
+        #         print(e)
+
         fixed_color_object_models = yolo.fix_color(deduplication_object_models)
 
         # ボーナスナンバー
@@ -120,8 +131,13 @@ while True:
             for color_object_model in color_object_models:
                 calibration.association(color_object_model)
 
-            calibration.state = State.in_adjustment
-            for i, hoge in enumerate(calibration.first_set_block_positions):
+            if len(fixed_color_object_models) != 10:
+                calibration.state = State.in_adjustment
+                calibration.adjustment(for_adjustment_iamge)
+            else:
+                calibration.state = State.finish
+
+            for i, hoge in enumerate(calibration.intersection_circle_positions):
                 if hoge.model == None:
                     print("none", i)
                 else:

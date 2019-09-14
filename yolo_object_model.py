@@ -1,5 +1,4 @@
-class YoloObjectModel():
-
+class YoloObjectModel:
     def __init__(self, class_id, label, score, left, right, top, bottom, clip_image):
         self.class_id = class_id
         self.label = label
@@ -12,8 +11,8 @@ class YoloObjectModel():
 
     def __lt__(self, other):
         return self.score > other.score
-    
+
     def calcCcntralCoordinate(self):
-        x = (self.right-self.left) / 2 + self.left
-        y = (self.bottom-self.top) / 2 + self.top
+        x = (self.right - self.left) / 2 + self.left
+        y = (self.bottom - self.top) / 2 + self.top
         return {"x": x, "y": y}
