@@ -22,7 +22,7 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 
 # VideoWriter を作成する。
 fourcc = cv2.VideoWriter_fourcc("m", "p", "4", "v")
-writer = cv2.VideoWriter("0913output_R.mp4", fourcc, fps, (width, height))
+writer = cv2.VideoWriter("0915output_R.mp4", fourcc, fps, (width, height))
 
 while True:
     # 1フレームずつ取得する。
