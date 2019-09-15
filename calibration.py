@@ -2,20 +2,30 @@ import cv2 as cv
 import numpy as np
 from enum import Enum
 
-from yolo_object_model import YoloObjectModel as model
-
 
 class State(Enum):
     in_calibration = "in_calibration"
     wait_yolo = "wait_yolo"
     in_association = "in_association"
     in_adjustment = "in_adjustment"
+    in_setting_serial = "in_setting_serial"
     finish = "finish"
 
 
 class CircleType(Enum):
     intersection_circle = "intersection_circle"
     block_circle = "block_circle"
+
+
+class NomberList(Enum):
+    one = 0
+    two = 1
+    three = 2
+    four = 3
+    five = 4
+    six = 5
+    seven = 6
+    eight = 7
 
 
 class ColorList(Enum):
@@ -59,10 +69,12 @@ class Calibration:
     intersection_circle_positions = []
     # ブロックサークルの座標を管理する配列
     block_circle_positions = []
-    # 交点サークル上における初期に配置されているブロックの色を管理する配列(indexは座標を表す)
-    first_set_block_colors = []
-    # ブロックサークル上に配置されたブロックの色を管理する配列(indexは座標を表し、9はブロックが配置されていないことを表す)
-    block_circle_colors = []
+    # 交点サークル上における初期に配置されているブロックの色を管理する配列(indexは座標を表す,中身はclassid)
+    serial_list_as_intersection_circle = []
+    # ブロックサークル上に配置されたブロックの色を管理する配列([数字,クラスid]黒は無視)
+    serial_list_as_block_circle = []
+    # ボーナスナンバー
+    bonus_number = 0
     # 状態
     state = State.in_association
     # 最後のあがき用
@@ -148,6 +160,27 @@ class Calibration:
             return 2, "yellow"
         if colorList == ColorList.green:
             return 3, "green"
+        if colorList == ColorList.black:
+            return 4, "black"
+
+    @classmethod
+    def _number_id(self, numberlist):
+        if numberlist == NomberList.one:
+            return 1
+        if numberlist == NomberList.two:
+            return 2
+        if numberlist == NomberList.three:
+            return 3
+        if numberlist == NomberList.four:
+            return 4
+        if numberlist == NomberList.five:
+            return 5
+        if numberlist == NomberList.six:
+            return 6
+        if numberlist == NomberList.seven:
+            return 7
+        if numberlist == NomberList.eight:
+            return 8
 
     @classmethod
     # 最後の悪あがき
@@ -220,14 +253,40 @@ class Calibration:
                 calibration_model, frame, CircleType.block_circle
             )
 
+    # シリアル通信の準備をする
+    def set_serial_list(self, bonus_number_models):
+        if len(bonus_number_models) == 0:
+            self.bonus_number = 0
+        else:
+            # スコアが高い順にソート
+            bonus_number_models = sorted(bonus_number_models)
+            # 一番高いやつを信用する
+            bonus_number_model = bonus_number_models[0]
+            self.bonus_number = self._number_id(bonus_number_model.class_id)
+
+        # 交点サークル
+        for intersection_circle_position in self.intersection_circle_positions:
+            self.serial_list_as_intersection_circle.append(
+                intersection_circle_position.model.class_id
+            )
+
+        # ブロックサークル
+        for index, block_circle_position in enumerate(self.block_circle_positions):
+            # 無検出と黒は無視
+            if (
+                block_circle_position.model != None
+                and block_circle_position.model.class_id != 4
+            ):
+                # ブロックサークルの数字として送りたい. index == 0ならブロックサークルの数字は1
+                self.serial_list_as_block_circle.append(index + 1)
+                self.serial_list_as_block_circle.append(
+                    block_circle_position.model.class_id
+                )
+
 
 def hoge():
-    a = 59
-    b = 57
-    print(2 - 4)
-    print(abs(2 - 4))
-    print(abs(a - b))
-    print(abs(b - a))
+    calibration = Calibration()
+    print(calibration._number_id(NomberList(0)))
 
 
 if __name__ == "__main__":

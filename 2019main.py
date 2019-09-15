@@ -11,6 +11,7 @@ from filters.gamma_ccorrection import *
 from calibration import Calibration, State
 from filters.unsharp_masking import *
 from filters.background_subtractor import *
+from serial_protocol import *
 
 # VideoCapture を作成する。
 # camera_url = 'video/pre2/output2_bad.mp4'
@@ -19,11 +20,6 @@ from filters.background_subtractor import *
 camera_url = "http://169.254.16.205/?action=stream"
 # L
 # camera_url = 'http://169.254.161.93/?action=stream'
-
-
-# VideoCapture を作成する。
-# camera_url = "output7.mp4"
-
 cap = cv.VideoCapture(camera_url)
 
 # VideoWriter を作成する。
@@ -31,6 +27,9 @@ width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
 fps = cap.get(cv.CAP_PROP_FPS)
 fourcc = cv.VideoWriter_fourcc("m", "p", "4", "v")
+
+# BlueTooth
+serial = SerialProtocol("/dev/tty.MindstormsEV3-SerialPor", 9600)
 
 # カラーブロック
 block_model_cfg_pass = "yolo/2018/yolov3.cfg"
@@ -64,6 +63,8 @@ calibration.make_window()
 frame_count = 1
 
 while True:
+    # ロボットからの通信を読む(返ってくるかの確認)
+    serial.catch_serial()
     # ビデオ情報の読み込み
     hasFrame, frame = cap.read()
 
@@ -97,14 +98,6 @@ while True:
         drawed_image, object_models = yolo.postprocess(input_image)
         deduplication_object_models = yolo.deduplication(object_models)
 
-        # for hoge in deduplication_object_models:
-        #     img = hoge.clip_image
-        #     label = hoge.label
-        #     try:
-        #         print(label, img[int(img.shape[0] * 0.5), int(img.shape[1] * 0.5)])
-        #     except Exception as e:
-        #         print(e)
-
         fixed_color_object_models = yolo.fix_color(deduplication_object_models)
 
         # ボーナスナンバー
@@ -133,10 +126,22 @@ while True:
                 calibration.association(color_object_model)
 
             if len(fixed_color_object_models) != 10:
+                print("in_adjustment")
                 calibration.state = State.in_adjustment
                 calibration.adjustment(for_adjustment_iamge)
+                calibration.state = State.in_setting_serial
             else:
-                calibration.state = State.finish
+                calibration.state = State.in_setting_serial
+
+            print("in_setting_serial")
+            calibration.set_serial_list(deduplication_number_models)
+            print("finish")
+            serial.bonus_number = calibration.bonus_number
+            serial.serial_list_as_intersection_circle = (
+                calibration.serial_list_as_intersection_circle
+            )
+            serial.serial_list_as_block_circle = calibration.serial_list_as_block_circle
+            serial.send_serial()
 
             for i, hoge in enumerate(calibration.intersection_circle_positions):
                 if hoge.model == None:
