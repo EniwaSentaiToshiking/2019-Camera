@@ -83,12 +83,13 @@ while True:
 
     # 10フレームごとに行う
     if frame_count == 10:
-        input_image = create_average_image(images)
+        # 処理能力が足りないと詰むので
+        try:
+            input_image = create_average_image(images)
+        except Exception as e:
+            input_image = frame
         # 最後の微調整用
         for_adjustment_iamge = copy.deepcopy(input_image)
-        # 処理能力が足りないと詰むので
-        # if input_image == None:
-        #     input_image = frame
         input_image = equalize_hist_color(input_image)
         # input_image = gamma_ccorrection(input_image, 0.8)
         # input_image = unsharp_masking(input_image)
@@ -118,7 +119,11 @@ while True:
         images.clear()
 
         # yoloの結果とcalibrationのstateから判断して，対応付に向かう
-        if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
+        if (
+            len(fixed_color_object_models) > 8
+            and calibration.state == State.wait_yolo
+            and serial.line != ""
+        ):
             color_object_models = copy.deepcopy(fixed_color_object_models)
             print("try association")
             calibration.state = State.in_association

@@ -262,7 +262,7 @@ class Calibration:
             bonus_number_models = sorted(bonus_number_models)
             # 一番高いやつを信用する
             bonus_number_model = bonus_number_models[0]
-            self.bonus_number = self._number_id(bonus_number_model.class_id)
+            self.bonus_number = self._number_id(NomberList(bonus_number_model.class_id))
 
         # 交点サークル
         for intersection_circle_position in self.intersection_circle_positions:
