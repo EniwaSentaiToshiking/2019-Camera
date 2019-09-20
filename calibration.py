@@ -17,6 +17,11 @@ class CircleType(Enum):
     block_circle = "block_circle"
 
 
+class CourseType(Enum):
+    left = 0
+    right = 1
+
+
 class NomberList(Enum):
     one = 0
     two = 1
@@ -79,6 +84,7 @@ class Calibration:
     state = State.in_association
     # 最後のあがき用
     to_adjust_color = AdjustColor()
+    course_type = CourseType.left
 
     # 描画を行う上での初期設定
     def make_window(self):
@@ -205,7 +211,7 @@ class Calibration:
                 # 黒(数字の色)扱い 数字の色
                 if abs(r_g) < 20 and abs(r_b) < 20 and abs(g_r) < 20:
                     # 交点サークルだけ黒の補完をする
-                    if circle_type == CircleType.block_circle:
+                    if circle_type == CircleType.intersection_circle:
                         calibration_model.model = AdjustObjectModel(
                             self._color_id(ColorList.black)[0],
                             self._color_id(ColorList.black)[1],
@@ -253,6 +259,23 @@ class Calibration:
                 calibration_model, frame, CircleType.block_circle
             )
 
+    # 魔の場所への対応
+    def adjustment_magic_positions(self):
+        # 魔の場所に対応するためのカウント R:3 L:1
+        contain_model_count = 0
+        for calibration_model in self.block_circle_positions:
+            if calibration_model.model != None:
+                contain_model_count += 1
+
+        # 魔の場所に対応する R:3 L:1
+        if contain_model_count < 3:
+            pass
+        else:
+            if self.course_type == CourseType.left:
+                self.block_circle_positions[0].model = None
+            elif self.course_type == CourseType.right:
+                self.block_circle_positions[2].model = None
+
     # シリアル通信の準備をする
     def set_serial_list(self, bonus_number_models):
         if len(bonus_number_models) == 0:
@@ -282,12 +305,3 @@ class Calibration:
                 self.serial_list_as_block_circle.append(
                     block_circle_position.model.class_id
                 )
-
-
-def hoge():
-    calibration = Calibration()
-    print(calibration._number_id(NomberList(0)))
-
-
-if __name__ == "__main__":
-    hoge()

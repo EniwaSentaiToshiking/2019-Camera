@@ -8,16 +8,16 @@ from average_image import *
 from yolo import *
 from filters.equalize_hist_color import *
 from filters.gamma_ccorrection import *
-from calibration import Calibration, State
+from calibration import Calibration, State, CourseType
 from filters.unsharp_masking import *
 from filters.background_subtractor import *
 from serial_protocol import *
 
 # VideoCapture を作成する。
-# camera_url = 'video/pre2/output2_bad.mp4'
+camera_url = "video/0915output_R.mp4"
 # camera_url = 'http://192.168.11.100/?action=stream'
 # R
-camera_url = "http://169.254.16.205/?action=stream"
+# camera_url = "http://169.254.16.205/?action=stream"
 # L
 # camera_url = 'http://169.254.161.93/?action=stream'
 cap = cv.VideoCapture(camera_url)
@@ -35,7 +35,7 @@ serial = SerialProtocol("/dev/tty.MindstormsEV3-SerialPor", 9600)
 block_model_cfg_pass = "yolo/2018/yolov3.cfg"
 block_model_weiight_pass = "yolo/2018/yolov3.weights"
 # block_model_cfg_pass = "yolo/0905/etrobo2019_block.cfg"
-# block_model_weiight_pass = "yolo/0905/etrobo2019_block_1100.weights"
+# block_model_weiight_pass = "yolo/0905/etrobo2019_block_900.weights"
 block_model_names_pass = "yolo/0905/learning.names"
 yolo = YOLO(block_model_cfg_pass, block_model_weiight_pass, block_model_names_pass, 0.1)
 
@@ -89,8 +89,8 @@ while True:
         except Exception as e:
             input_image = frame
         # 最後の微調整用
-        for_adjustment_iamge = copy.deepcopy(input_image)
         input_image = equalize_hist_color(input_image)
+        for_adjustment_iamge = copy.deepcopy(input_image)
         # input_image = gamma_ccorrection(input_image, 0.8)
         # input_image = unsharp_masking(input_image)
         # input_image = background_subtractor(input_image)
@@ -124,18 +124,25 @@ while True:
             and calibration.state == State.wait_yolo
             and serial.line != ""
         ):
+            # if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
             color_object_models = copy.deepcopy(fixed_color_object_models)
             print("try association")
             calibration.state = State.in_association
             for color_object_model in color_object_models:
                 calibration.association(color_object_model)
 
+            # ちゃんと変更するように！！！
+            calibration.course_type = CourseType.right
+            # ちゃんと変更するように！！！
+
             if len(fixed_color_object_models) != 10:
                 print("in_adjustment")
                 calibration.state = State.in_adjustment
                 calibration.adjustment(for_adjustment_iamge)
+                calibration.adjustment_magic_positions()
                 calibration.state = State.in_setting_serial
             else:
+                calibration.adjustment_magic_positions()
                 calibration.state = State.in_setting_serial
 
             print("in_setting_serial")

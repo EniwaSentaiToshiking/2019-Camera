@@ -4,6 +4,14 @@ import numpy as np
 from yolo_object_model import YoloObjectModel as model
 
 
+class FixColor:
+    white = [255, 255, 255]
+    red = [5, 5, 60]
+    blue = [72, 51, 25]
+    yellow = [0, 70, 100]
+    green = [39, 57, 24]
+
+
 class YOLO:
 
     # 初期化
@@ -12,6 +20,8 @@ class YOLO:
     inpHeight = 416
     rbyg = []
     black = []
+    # 修正用のカラーリスト
+    fix_color_lists = FixColor()
 
     def __init__(
         self, model_cfg_pass, model_weiight_pass, model_names_pass, conf_threshold
@@ -234,17 +244,29 @@ class YOLO:
                 r = int(object_model.clip_image[center][2])
                 g = int(object_model.clip_image[center][1])
                 b = int(object_model.clip_image[center][0])
+                vec_a = np.array([b, g, r])
+
             except Exception as e:
                 # IndexError: index 39 is out of bounds for axis 1 with size 32でコケる
                 # print(e)
                 return object_models
             # 赤と緑の差に注目する
-            if (abs(r - g) >= 50) and object_model.class_id == 2:
-                object_model.class_id = 0
-                object_model.label = "red"
-            if (abs(r - g) < 50) and object_model.class_id == 0:
-                object_model.class_id = 2
-                object_model.label = "yellow"
+            distance_red = np.linalg.norm(vec_a - self.fix_color_lists.red)
+            distance_yellow = np.linalg.norm(vec_a - self.fix_color_lists.yellow)
+            if object_model.class_id == 2:  # 黄
+                # 3次元の2点間の距離を算出し，短い方の距離に修正する
+                if distance_red < distance_yellow:
+                    object_model.class_id = 0
+                    object_model.label = "red"
+                else:
+                    pass
+            if object_model.class_id == 0:  # 赤
+                # 3次元の2点間の距離を算出し，短い方の距離に修正する
+                if distance_red > distance_yellow:
+                    object_model.class_id = 2
+                    object_model.label = "yellow"
+                else:
+                    pass
 
         return object_models
 
