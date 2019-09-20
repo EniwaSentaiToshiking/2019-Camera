@@ -113,12 +113,12 @@ while True:
         images.clear()
 
         # yoloの結果とcalibrationのstateから判断して，対応付に向かう
-        # if (
-        #     len(fixed_color_object_models) > 8
-        #     and calibration.state == State.wait_yolo
-        #     and serial.line != ""
-        # ):
-        if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
+        if (
+            len(fixed_color_object_models) > 8
+            and calibration.state == State.wait_yolo
+            and serial.line != ""
+        ):
+            # if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
             color_object_models = copy.deepcopy(fixed_color_object_models)
             print("try association")
             calibration.state = State.in_association
