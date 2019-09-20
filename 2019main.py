@@ -14,7 +14,7 @@ from filters.background_subtractor import *
 from serial_protocol import *
 
 # VideoCapture を作成する。
-camera_url = "video/0915output_R.mp4"
+camera_url = "video/0920output_L.mp4"
 # camera_url = 'http://192.168.11.100/?action=stream'
 # R
 # camera_url = "http://169.254.16.205/?action=stream"
@@ -73,9 +73,6 @@ while True:
         cv.waitKey(3000)
         break  # 映像取得に失敗
 
-    # if frame_count == 0:
-    #     cv.imwrite("backgroung_image/backgroung_image.png", frame)
-
     if frame_count < 10:
         images.append(frame)
         # copy.deepcopy()を使って値渡しにしないと，打った点が検出の邪魔になる
@@ -91,9 +88,6 @@ while True:
         # 最後の微調整用
         input_image = equalize_hist_color(input_image)
         for_adjustment_iamge = copy.deepcopy(input_image)
-        # input_image = gamma_ccorrection(input_image, 0.8)
-        # input_image = unsharp_masking(input_image)
-        # input_image = background_subtractor(input_image)
 
         # カラーブロック
         drawed_image, object_models = yolo.postprocess(input_image)

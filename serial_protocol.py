@@ -45,23 +45,24 @@ class SerialProtocol:
             pass
 
     def send_serial(self):
+        print("bonus_number", self.bonus_number)
+        print("intersection_circle", self.serial_list_as_intersection_circle)
+        print("block_circle", self.serial_list_as_block_circle)
+
+        # ボーナスナンバー
+        self.send_data += str(self.bonus_number)
+
+        # 交点サークル
+        for val in self.serial_list_as_intersection_circle:
+            self.send_data += str(val)
+
+        # ブロックサークル
+        for val in self.serial_list_as_block_circle:
+            self.send_data += str(val)
+
+        print("self.send_data", self.send_data)
         # BlueToothで座標データの送信
         if self.line:  # ロボットからシグナルが来ている場合
-            print("bonus_number", self.bonus_number)
-            print("intersection_circle", self.serial_list_as_intersection_circle)
-            print("block_circle", self.serial_list_as_block_circle)
-
-            # ボーナスナンバー
-            self.send_data += str(self.bonus_number)
-
-            # 交点サークル
-            for val in self.serial_list_as_intersection_circle:
-                self.send_data += str(val)
-
-            # ブロックサークル
-            for val in self.serial_list_as_block_circle:
-                self.send_data += str(val)
-
             # BlueToothで送信
             self.ser.write(self.send_data.encode("ascii"))
             self.ser.close()
