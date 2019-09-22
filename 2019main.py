@@ -14,8 +14,8 @@ from filters.background_subtractor import *
 from serial_protocol import *
 
 # VideoCapture を作成する。
-camera_url = "video/0920output_L.mp4"
-# camera_url = 'http://192.168.11.100/?action=stream'
+# camera_url = "video/0920output_L.mp4"
+camera_url = "http://192.168.11.100/?action=stream"
 # R
 # camera_url = "http://169.254.16.205/?action=stream"
 # L
@@ -113,12 +113,8 @@ while True:
         images.clear()
 
         # yoloの結果とcalibrationのstateから判断して，対応付に向かう
-        if (
-            len(fixed_color_object_models) > 8
-            and calibration.state == State.wait_yolo
-            and serial.line != ""
-        ):
-            # if len(fixed_color_object_models) > 8 and calibration.state == State.wait_yolo:
+        if calibration.state == State.wait_yolo and serial.line != "":
+            # if len(fixed_color_object_models) > 6 and calibration.state == State.wait_yolo:
             color_object_models = copy.deepcopy(fixed_color_object_models)
             print("try association")
             calibration.state = State.in_association
@@ -126,7 +122,7 @@ while True:
                 calibration.association(color_object_model)
 
             # ちゃんと変更するように！！！
-            calibration.course_type = CourseType.right
+            calibration.course_type = CourseType.left
             # ちゃんと変更するように！！！
 
             if len(fixed_color_object_models) != 10:

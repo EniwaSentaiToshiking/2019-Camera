@@ -61,6 +61,7 @@ class SerialProtocol:
             self.send_data += str(val)
 
         print("self.send_data", self.send_data)
+        print("ascii", self.send_data.encode("ascii"))
         # BlueToothで座標データの送信
         if self.line:  # ロボットからシグナルが来ている場合
             # BlueToothで送信

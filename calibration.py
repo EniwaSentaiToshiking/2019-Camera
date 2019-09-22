@@ -44,10 +44,12 @@ class ColorList(Enum):
 
 class AdjustColor:
     white = [255, 255, 255]
-    red = [5, 22, 81]
+    # red = [5, 22, 81]
+    red = [5, 5, 60]
     blue = [72, 51, 25]
-    yellow = [0, 88, 120]
-    green = [39, 57, 24]
+    # yellow = [0, 88, 120]
+    yellow = [0, 70, 95]
+    green = [39, 57, 16]
 
     colors = [white, red, blue, yellow, green]
 
@@ -209,7 +211,7 @@ class Calibration:
                 g_r = int(g) - int(r)
 
                 # 黒(数字の色)扱い 数字の色
-                if abs(r_g) < 20 and abs(r_b) < 20 and abs(g_r) < 20:
+                if abs(r_g) < 16 and abs(r_b) < 16 and abs(g_r) < 16:
                     # 交点サークルだけ黒の補完をする
                     if circle_type == CircleType.intersection_circle:
                         calibration_model.model = AdjustObjectModel(
